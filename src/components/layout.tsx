@@ -1,6 +1,10 @@
+'use client'
+
+import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from './theme-toggle'
-import { Github, Mail, Twitter, Rss, ArrowRight } from 'lucide-react'
+import { HaskellCompiler } from './haskell-compiler'
+import { Github, Mail, Twitter, Rss, ArrowRight, Terminal } from 'lucide-react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 
@@ -9,6 +13,8 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
+  const [isCompilerOpen, setIsCompilerOpen] = useState(false)
+
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-50 border-b border-border/40 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/80">
@@ -30,6 +36,15 @@ export function Layout({ children }: LayoutProps) {
             >
               ABOUT
             </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsCompilerOpen(true)}
+              className="text-base font-bold hover:text-primary transition-colors border-primary/20 hover:border-primary/40"
+            >
+              <Terminal className="h-4 w-4 mr-2" />
+              GHC
+            </Button>
             <ThemeToggle />
           </nav>
         </div>
@@ -247,6 +262,11 @@ export function Layout({ children }: LayoutProps) {
           </div>
         </div>
       </footer>
+
+      <HaskellCompiler 
+        isOpen={isCompilerOpen} 
+        onClose={() => setIsCompilerOpen(false)} 
+      />
     </div>
   )
 } 

@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent } from '@/components/ui/card'
 import { BlogPost } from '@/lib/blog'
-import { Search } from 'lucide-react'
+import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -18,10 +18,12 @@ interface HomePageProps {
 export function HomePage({ posts, tags }: HomePageProps) {
   const [selectedTag, setSelectedTag] = useState<string | null>(null)
   const [searchQuery, setSearchQuery] = useState('')
+  const [currentPage, setCurrentPage] = useState(1)
 
   // Find the headline article (The 10th Door)
   const headlinePost = posts.find(post => post.slug === 'the-tenth-door-singularity-being')
 
+  // Filter posts excluding the featured article
   const filteredPosts = posts.filter(post => {
     const matchesTag = !selectedTag || post.tags?.includes(selectedTag)
     const matchesSearch = !searchQuery || 
@@ -29,8 +31,28 @@ export function HomePage({ posts, tags }: HomePageProps) {
       post.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       post.tags?.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
     
-    return matchesTag && matchesSearch
+    // Exclude the featured article from the grid
+    const isNotFeatured = post.slug !== 'the-tenth-door-singularity-being'
+    
+    return matchesTag && matchesSearch && isNotFeatured
   })
+
+  // Pagination logic
+  const postsPerPage = 6 // 2 rows × 3 columns
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage)
+  const startIndex = (currentPage - 1) * postsPerPage
+  const currentPosts = filteredPosts.slice(startIndex, startIndex + postsPerPage)
+
+  // Reset to page 1 when filters change
+  const handleTagChange = (tag: string | null) => {
+    setSelectedTag(tag)
+    setCurrentPage(1)
+  }
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query)
+    setCurrentPage(1)
+  }
 
   return (
     <>
@@ -65,7 +87,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
                       alt={headlinePost.title}
                       fill
                       className="object-cover object-top transition-all duration-700"
-                      style={{ objectPosition: '50% 25%' }}
+                      style={{ objectPosition: '50% 0%' }}
                     />
                     {/* Gradient overlay for better blending */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60 lg:to-background/80"></div>
@@ -142,7 +164,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
           <Input
             placeholder="Search articles..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
             className="pl-10"
           />
         </div>
@@ -151,7 +173,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
           <Badge
             variant={selectedTag === null ? "default" : "outline"}
             className="cursor-pointer hover:bg-primary/10 transition-colors font-bold"
-            onClick={() => setSelectedTag(null)}
+            onClick={() => handleTagChange(null)}
           >
             ALL POSTS
           </Badge>
@@ -160,7 +182,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
               key={tag}
               variant={selectedTag === tag ? "default" : "outline"}
               className="cursor-pointer hover:bg-primary/10 transition-colors font-bold"
-              onClick={() => setSelectedTag(tag)}
+              onClick={() => handleTagChange(tag)}
             >
               {tag.toUpperCase()}
             </Badge>
@@ -168,12 +190,57 @@ export function HomePage({ posts, tags }: HomePageProps) {
         </div>
       </div>
 
+      {/* Articles Section Header */}
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-black text-primary font-sans mb-2">RECENT EXPLORATIONS</h2>
+        <div className="w-24 h-1 bg-primary mx-auto"></div>
+      </div>
+
       {/* Posts Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-        {filteredPosts.map((post) => (
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {currentPosts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-4 mb-16">
+          <button
+            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+            disabled={currentPage === 1}
+            className="inline-flex items-center px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            <ChevronLeft className="mr-1 h-4 w-4" />
+            PREVIOUS
+          </button>
+          
+          <div className="flex items-center gap-2">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                className={`px-3 py-2 text-sm font-bold rounded transition-colors ${
+                  currentPage === page
+                    ? 'bg-primary text-primary-foreground'
+                    : 'text-muted-foreground hover:text-primary hover:bg-muted/50'
+                }`}
+              >
+                {page}
+              </button>
+            ))}
+          </div>
+          
+          <button
+            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+            disabled={currentPage === totalPages}
+            className="inline-flex items-center px-4 py-2 text-sm font-bold text-muted-foreground hover:text-primary disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          >
+            NEXT
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </button>
+        </div>
+      )}
 
       {filteredPosts.length === 0 && (
         <div className="text-center py-16">
