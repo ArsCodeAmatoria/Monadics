@@ -280,8 +280,8 @@ main = do
 
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="w-full max-w-7xl h-[90vh] bg-background border-2 border-primary/20 shadow-2xl">
-        <CardHeader className="border-b border-border/40 bg-muted/20">
+      <Card className="w-full max-w-7xl h-[90vh] bg-background border-2 border-primary/20 shadow-2xl flex flex-col">
+        <CardHeader className="border-b border-border/40 bg-muted/20 flex-none">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Terminal className="h-6 w-6 text-primary" />
@@ -333,7 +333,7 @@ main = do
           </div>
         </CardHeader>
 
-        <CardContent className="p-0 h-full">
+        <CardContent className="p-0 flex-1 overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
             {/* Code Editor */}
             <div className="border-r border-border/40 bg-muted/5">
@@ -369,38 +369,7 @@ main = do
                 </div>
               </div>
               
-              <div ref={editorRef} className="p-4 h-full overflow-hidden relative">
-                <style jsx>{`
-                  .w-tc-editor-text {
-                    color: #f8f8f2 !important;
-                  }
-                  .token.comment {
-                    color: #6272a4 !important;
-                    font-style: italic;
-                  }
-                  .token.keyword {
-                    color: #ff79c6 !important;
-                    font-weight: bold;
-                  }
-                  .token.string {
-                    color: #f1fa8c !important;
-                  }
-                  .token.function {
-                    color: #50fa7b !important;
-                  }
-                  .token.operator {
-                    color: #ff79c6 !important;
-                  }
-                  .token.punctuation {
-                    color: #f8f8f2 !important;
-                  }
-                  .token.number {
-                    color: #bd93f9 !important;
-                  }
-                  .token.class-name {
-                    color: #8be9fd !important;
-                  }
-                `}</style>
+              <div ref={editorRef} className="p-4 flex-1 overflow-hidden relative">
                 <CodeEditor
                   value={code}
                   language="haskell"
@@ -415,14 +384,14 @@ main = do
                     overflow: 'auto',
                     lineHeight: '1.6'
                   }}
-                  data-color-mode="dark"
+                  data-color-mode="light"
                 />
               </div>
             </div>
 
             {/* Terminal Output */}
-            <div className="bg-gradient-to-b from-gray-900 to-black text-green-400 relative">
-              <div className="border-b border-green-400/20 px-4 py-2 bg-black/80 backdrop-blur-sm">
+            <div className="bg-background border-l border-border/40 relative flex flex-col">
+              <div className="border-b border-border/40 px-4 py-2 bg-muted/10 backdrop-blur-sm flex-none">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
@@ -430,19 +399,19 @@ main = do
                       <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                       <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                     </div>
-                    <h3 className="text-sm font-bold text-green-400 uppercase ml-2">
+                    <h3 className="text-sm font-bold text-primary uppercase ml-2">
                       QUANTUM TERMINAL
                     </h3>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs bg-green-400/20 text-green-400 border-green-400/30 animate-pulse">
+                    <Badge variant="secondary" className="text-xs animate-pulse">
                       {isRunning ? 'COMPILING' : 'READY'}
                     </Badge>
                     <Button
                       size="sm"
                       onClick={clearOutput}
                       variant="outline"
-                      className="text-xs font-bold border-green-400/30 text-green-400 hover:bg-green-400/10"
+                      className="text-xs font-bold"
                     >
                       <Trash2 className="h-3 w-3 mr-1" />
                       CLEAR
@@ -451,39 +420,39 @@ main = do
                 </div>
               </div>
               
-              <div className="p-4 h-full overflow-auto relative">
+              <div className="p-4 flex-1 overflow-auto relative bg-muted/5">
                 {/* Matrix rain effect backdrop */}
                 <div className="absolute inset-0 opacity-5 pointer-events-none">
-                  <div className="text-green-400 text-xs font-mono animate-pulse">
+                  <div className="text-muted-foreground text-xs font-mono animate-pulse">
                     {'01010011 01110100 01100001 01110100 01100101 '.repeat(100)}
                   </div>
                 </div>
                 
-                <pre className="font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10">
-                  <span className="text-green-300">╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
+                <pre className="font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10 text-foreground">
+                  <span className="text-primary">╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
                   {'\n'}
-                  <span className="text-green-300">│</span> <span className="text-cyan-400">GHC Quantum v9.8.2</span> <span className="text-green-300">│</span>
+                  <span className="text-primary">│</span> <span className="text-primary font-bold">GHC Quantum v9.8.2</span> <span className="text-primary">│</span>
                   {'\n'}
-                  <span className="text-green-300">╰────────────────────────────────────╯</span>
+                  <span className="text-primary">╰────────────────────────────────────╯</span>
                   {'\n\n'}
                   {output || (
                     <>
-                      <span className="text-green-500">{'>'}</span> <span className="text-white">QUANTUM COMPILER READY</span>
+                      <span className="text-primary">{'>'}</span> <span className="text-foreground">QUANTUM COMPILER READY</span>
                       {'\n'}
-                      <span className="text-green-500">{'>'}</span> <span className="text-white">AWAITING MONADIC INSTRUCTIONS...</span>
+                      <span className="text-primary">{'>'}</span> <span className="text-foreground">AWAITING MONADIC INSTRUCTIONS...</span>
                       {'\n\n'}
-                      <span className="text-cyan-400">KEYBOARD SHORTCUTS:</span>
+                      <span className="text-primary font-bold">KEYBOARD SHORTCUTS:</span>
                       {'\n'}
-                      <span className="text-green-500">•</span> <span className="text-yellow-400">Ctrl+Enter:</span> <span className="text-white">RUN CODE</span>
+                      <span className="text-primary">•</span> <span className="text-muted-foreground">Ctrl+Enter:</span> <span className="text-foreground">RUN CODE</span>
                       {'\n'}
-                      <span className="text-green-500">•</span> <span className="text-yellow-400">Ctrl+E:</span> <span className="text-white">LOAD EXAMPLE</span>
+                      <span className="text-primary">•</span> <span className="text-muted-foreground">Ctrl+E:</span> <span className="text-foreground">LOAD EXAMPLE</span>
                       {'\n'}
-                      <span className="text-green-500">•</span> <span className="text-yellow-400">Escape:</span> <span className="text-white">CLOSE COMPILER</span>
+                      <span className="text-primary">•</span> <span className="text-muted-foreground">Escape:</span> <span className="text-foreground">CLOSE COMPILER</span>
                       {'\n\n'}
-                      <span className="text-purple-400">TYPE YOUR HASKELL CODE AND PRESS RUN</span>
+                      <span className="text-primary font-bold">TYPE YOUR HASKELL CODE AND PRESS RUN</span>
                     </>
                   )}
-                  {isRunning && <span className="animate-pulse text-green-400">█</span>}
+                  {isRunning && <span className="animate-pulse text-primary">█</span>}
                 </pre>
               </div>
             </div>
