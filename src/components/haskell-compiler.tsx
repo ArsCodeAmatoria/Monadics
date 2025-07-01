@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { X, Play, Square, Download, Trash2, Terminal, Code2, Settings } from 'lucide-react'
 import CodeEditor from '@uiw/react-textarea-code-editor'
+import { useTheme } from 'next-themes'
 
 interface HaskellCompilerProps {
   isOpen: boolean
@@ -13,6 +14,9 @@ interface HaskellCompilerProps {
 }
 
 export function HaskellCompiler({ isOpen, onClose }: HaskellCompilerProps) {
+  const { theme } = useTheme()
+  const isDark = theme === 'dark'
+  
   const [code, setCode] = useState(`-- Welcome to the MONADIC HASKELL COMPILER
 -- Explore consciousness through functional programming
 
@@ -384,14 +388,22 @@ main = do
                     overflow: 'auto',
                     lineHeight: '1.6'
                   }}
-                  data-color-mode="light"
+                  data-color-mode={isDark ? "dark" : "light"}
                 />
               </div>
             </div>
 
             {/* Terminal Output */}
-            <div className="bg-background border-l border-border/40 relative flex flex-col">
-              <div className="border-b border-border/40 px-4 py-2 bg-muted/10 backdrop-blur-sm flex-none">
+            <div className={`relative flex flex-col ${
+              isDark 
+                ? 'bg-gradient-to-b from-gray-900 to-black text-green-400' 
+                : 'bg-background border-l border-border/40'
+            }`}>
+              <div className={`border-b px-4 py-2 backdrop-blur-sm flex-none ${
+                isDark 
+                  ? 'border-green-400/20 bg-black/80' 
+                  : 'border-border/40 bg-muted/10'
+              }`}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="flex gap-1">
@@ -399,19 +411,25 @@ main = do
                       <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
                       <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
                     </div>
-                    <h3 className="text-sm font-bold text-primary uppercase ml-2">
+                    <h3 className={`text-sm font-bold uppercase ml-2 ${
+                      isDark ? 'text-green-400' : 'text-primary'
+                    }`}>
                       QUANTUM TERMINAL
                     </h3>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs animate-pulse">
+                    <Badge variant="secondary" className={`text-xs animate-pulse ${
+                      isDark ? 'bg-green-400/20 text-green-400 border-green-400/30' : ''
+                    }`}>
                       {isRunning ? 'COMPILING' : 'READY'}
                     </Badge>
                     <Button
                       size="sm"
                       onClick={clearOutput}
                       variant="outline"
-                      className="text-xs font-bold"
+                      className={`text-xs font-bold ${
+                        isDark ? 'border-green-400/30 text-green-400 hover:bg-green-400/10' : ''
+                      }`}
                     >
                       <Trash2 className="h-3 w-3 mr-1" />
                       CLEAR
@@ -420,39 +438,45 @@ main = do
                 </div>
               </div>
               
-              <div className="p-4 flex-1 overflow-auto relative bg-muted/5">
+              <div className={`p-4 flex-1 overflow-auto relative ${
+                isDark ? '' : 'bg-muted/5'
+              }`}>
                 {/* Matrix rain effect backdrop */}
                 <div className="absolute inset-0 opacity-5 pointer-events-none">
-                  <div className="text-muted-foreground text-xs font-mono animate-pulse">
+                  <div className={`text-xs font-mono animate-pulse ${
+                    isDark ? 'text-green-400' : 'text-muted-foreground'
+                  }`}>
                     {'01010011 01110100 01100001 01110100 01100101 '.repeat(100)}
                   </div>
                 </div>
                 
-                <pre className="font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10 text-foreground">
-                  <span className="text-primary">╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
+                <pre className={`font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10 ${
+                  isDark ? '' : 'text-foreground'
+                }`}>
+                  <span className={isDark ? 'text-green-300' : 'text-primary'}>╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
                   {'\n'}
-                  <span className="text-primary">│</span> <span className="text-primary font-bold">GHC Quantum v9.8.2</span> <span className="text-primary">│</span>
+                  <span className={isDark ? 'text-green-300' : 'text-primary'}>│</span> <span className={isDark ? 'text-cyan-400' : 'text-primary font-bold'}>GHC Quantum v9.8.2</span> <span className={isDark ? 'text-green-300' : 'text-primary'}>│</span>
                   {'\n'}
-                  <span className="text-primary">╰────────────────────────────────────╯</span>
+                  <span className={isDark ? 'text-green-300' : 'text-primary'}>╰────────────────────────────────────╯</span>
                   {'\n\n'}
                   {output || (
                     <>
-                      <span className="text-primary">{'>'}</span> <span className="text-foreground">QUANTUM COMPILER READY</span>
+                      <span className={isDark ? 'text-green-500' : 'text-primary'}>{'>'}</span> <span className={isDark ? 'text-white' : 'text-foreground'}>QUANTUM COMPILER READY</span>
                       {'\n'}
-                      <span className="text-primary">{'>'}</span> <span className="text-foreground">AWAITING MONADIC INSTRUCTIONS...</span>
+                      <span className={isDark ? 'text-green-500' : 'text-primary'}>{'>'}</span> <span className={isDark ? 'text-white' : 'text-foreground'}>AWAITING MONADIC INSTRUCTIONS...</span>
                       {'\n\n'}
-                      <span className="text-primary font-bold">KEYBOARD SHORTCUTS:</span>
+                      <span className={isDark ? 'text-cyan-400' : 'text-primary font-bold'}>KEYBOARD SHORTCUTS:</span>
                       {'\n'}
-                      <span className="text-primary">•</span> <span className="text-muted-foreground">Ctrl+Enter:</span> <span className="text-foreground">RUN CODE</span>
+                      <span className={isDark ? 'text-green-500' : 'text-primary'}>•</span> <span className={isDark ? 'text-yellow-400' : 'text-muted-foreground'}>Ctrl+Enter:</span> <span className={isDark ? 'text-white' : 'text-foreground'}>RUN CODE</span>
                       {'\n'}
-                      <span className="text-primary">•</span> <span className="text-muted-foreground">Ctrl+E:</span> <span className="text-foreground">LOAD EXAMPLE</span>
+                      <span className={isDark ? 'text-green-500' : 'text-primary'}>•</span> <span className={isDark ? 'text-yellow-400' : 'text-muted-foreground'}>Ctrl+E:</span> <span className={isDark ? 'text-white' : 'text-foreground'}>LOAD EXAMPLE</span>
                       {'\n'}
-                      <span className="text-primary">•</span> <span className="text-muted-foreground">Escape:</span> <span className="text-foreground">CLOSE COMPILER</span>
+                      <span className={isDark ? 'text-green-500' : 'text-primary'}>•</span> <span className={isDark ? 'text-yellow-400' : 'text-muted-foreground'}>Escape:</span> <span className={isDark ? 'text-white' : 'text-foreground'}>CLOSE COMPILER</span>
                       {'\n\n'}
-                      <span className="text-primary font-bold">TYPE YOUR HASKELL CODE AND PRESS RUN</span>
+                      <span className={isDark ? 'text-purple-400' : 'text-primary font-bold'}>TYPE YOUR HASKELL CODE AND PRESS RUN</span>
                     </>
                   )}
-                  {isRunning && <span className="animate-pulse text-primary">█</span>}
+                  {isRunning && <span className={`animate-pulse ${isDark ? 'text-green-400' : 'text-primary'}`}>█</span>}
                 </pre>
               </div>
             </div>
