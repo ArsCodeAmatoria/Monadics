@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator'
 import { SocialShare } from '@/components/social-share'
 import { ArticleSchema } from '@/components/article-schema'
 import { InsightQuote } from '@/components/insight-quote'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -14,23 +15,60 @@ import rehypeKatex from 'rehype-katex'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
+// Card wrapper for content sections
+const ContentCard = ({ children, title }: { children: React.ReactNode; title?: string }) => {
+  if (title) {
+    return (
+      <Card className="my-6 bg-muted/20 border-muted">
+        <CardHeader>
+          <CardTitle className="text-lg">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {children}
+        </CardContent>
+      </Card>
+    )
+  }
+  return (
+    <Card className="my-6 bg-muted/10 border-muted/40">
+      <CardContent className="pt-6">
+        {children}
+      </CardContent>
+    </Card>
+  )
+}
+
 const components = {
   code({ className, children }: { className?: string; children?: React.ReactNode }) {
     const match = /language-(\w+)/.exec(className || '')
     return match ? (
-      <SyntaxHighlighter
-        language={match[1]}
-        style={dracula}
-        PreTag="div"
-        customStyle={{
-          borderRadius: '0.75rem',
-          fontSize: '0.9rem',
-          lineHeight: '1.5',
-        }}
-        showLineNumbers={false}
-      >
-        {String(children).replace(/\n$/, '')}
-      </SyntaxHighlighter>
+      <div className="my-6">
+        {/* Language badge before the code block */}
+        <div className="flex justify-between items-center mb-2">
+          <Badge variant="secondary" className="text-xs uppercase font-mono bg-muted text-muted-foreground">
+            {match[1]}
+          </Badge>
+        </div>
+        
+        {/* Code block without relative positioning */}
+        <div className="rounded-lg overflow-hidden border border-muted">
+          <SyntaxHighlighter
+            language={match[1]}
+            style={dracula}
+            PreTag="div"
+            customStyle={{
+              borderRadius: '0',
+              fontSize: '0.9rem',
+              lineHeight: '1.5',
+              margin: '0',
+              border: 'none'
+            }}
+            showLineNumbers={false}
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        </div>
+      </div>
     ) : (
       <code className={className}>
         {children}
@@ -38,6 +76,7 @@ const components = {
     )
   },
   InsightQuote,
+  ContentCard,
 }
 
 interface PageProps {

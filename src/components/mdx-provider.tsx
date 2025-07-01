@@ -4,6 +4,9 @@ import { MDXProvider } from '@mdx-js/react'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { ReactNode, HTMLAttributes } from 'react'
+import { InsightQuote } from './insight-quote'
+import { Badge } from './ui/badge'
+import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
 
 interface CodeProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -14,23 +17,62 @@ const Code = ({ className, children }: CodeProps) => {
   const language = className?.replace('language-', '') || 'text'
   
   return (
-    <SyntaxHighlighter
-      language={language}
-      style={dracula}
-      customStyle={{
-        borderRadius: '0.75rem',
-        fontSize: '0.9rem',
-        lineHeight: '1.5',
-      }}
-      showLineNumbers={false}
-    >
-      {String(children || '').replace(/\n$/, '')}
-    </SyntaxHighlighter>
+    <div className="my-6">
+      <div className="flex justify-between items-center mb-2">
+        <Badge variant="secondary" className="text-xs uppercase font-mono bg-muted text-muted-foreground">
+          {language}
+        </Badge>
+      </div>
+      
+      <div className="rounded-lg overflow-hidden border border-muted">
+        <SyntaxHighlighter
+          language={language}
+          style={dracula}
+          PreTag="div"
+          customStyle={{
+            borderRadius: '0',
+            fontSize: '0.9rem',
+            lineHeight: '1.5',
+            margin: '0',
+            border: 'none'
+          }}
+          showLineNumbers={false}
+        >
+          {String(children).replace(/\n$/, '')}
+        </SyntaxHighlighter>
+      </div>
+    </div>
+  )
+}
+
+// Card wrapper for content sections
+const ContentCard = ({ children, title }: { children: ReactNode; title?: string }) => {
+  if (title) {
+    return (
+      <Card className="my-6 bg-muted/20 border-muted">
+        <CardHeader>
+          <CardTitle className="text-lg text-foreground">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {children}
+        </CardContent>
+      </Card>
+    )
+  }
+  
+  return (
+    <Card className="my-6 bg-muted/20 border-muted">
+      <CardContent className="pt-6">
+        {children}
+      </CardContent>
+    </Card>
   )
 }
 
 const components = {
   code: Code,
+  InsightQuote,
+  ContentCard,
   h1: (props: HTMLAttributes<HTMLHeadingElement>) => <h1 className="text-3xl font-semibold mb-6 text-primary font-sans" {...props} />,
   h2: (props: HTMLAttributes<HTMLHeadingElement>) => <h2 className="text-2xl font-semibold mb-4 mt-8 text-primary font-sans" {...props} />,
   h3: (props: HTMLAttributes<HTMLHeadingElement>) => <h3 className="text-xl font-semibold mb-3 mt-6 font-sans" {...props} />,
