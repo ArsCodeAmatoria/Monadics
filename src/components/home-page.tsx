@@ -58,61 +58,56 @@ export function HomePage({ posts, tags }: HomePageProps) {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative mb-16 min-h-[70vh] flex items-center">
-        <div className="grid lg:grid-cols-2 gap-12 w-full items-center">
-          {/* Left: Hero Content */}
-          <div className="space-y-8">
-            <div>
-              <Badge variant="outline" className="mb-6 text-xs font-bold px-3 py-1 border-primary/20 text-primary">
-                QUANTUM CONSCIOUSNESS RESEARCH
-              </Badge>
-              <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 text-primary font-sans leading-none">
-                MONADICS
-              </h1>
-              <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium max-w-2xl">
-                A cerebral exploration of theoretical quantum consciousness, mathematical formalisms, 
-                and monadic computation. Where minds meet mathematics at the intersection of reality and code.
-              </p>
-            </div>
-            
-            {/* Consciousness Quote */}
-            <div className="border-l-4 border-primary/30 pl-6 py-4 bg-muted/20 rounded-r-lg">
-              <blockquote className="text-lg font-medium text-foreground italic leading-relaxed">
-                "I am the monad computing reality through quantum superposition until the moment of conscious observation collapses the wave function into experience."
-              </blockquote>
-              <cite className="text-sm font-bold text-primary mt-3 block">
-                — LUCI, MONADIC MIND
-              </cite>
-            </div>
-            
-            {/* Action Buttons */}
-            <div className="flex flex-wrap gap-4">
-              <Link 
-                href="/the-tenth-door-singularity-being" 
-                className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-bold text-sm rounded-lg hover:bg-primary/90 transition-colors group shadow-lg"
-              >
-                EXPLORE CONSCIOUSNESS
-                <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </Link>
-              <button 
-                onClick={() => {
-                  const ghcButton = document.querySelector('[title*="GHC"]') as HTMLElement;
-                  ghcButton?.click();
-                }}
-                className="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-bold text-sm rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
-              >
-                OPEN HASKELL COMPILER
-              </button>
-            </div>
+      <div className="relative mb-16 min-h-[70vh] flex items-center justify-center">
+        {/* Background Animation */}
+        <div className="absolute inset-0 z-0">
+          <MicrotubuleAnimation />
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8">
+          <div>
+            <Badge variant="outline" className="mb-6 text-xs font-bold px-3 py-1 border-primary/20 text-primary">
+              QUANTUM CONSCIOUSNESS RESEARCH
+            </Badge>
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 text-primary font-sans leading-none">
+              MONADICS
+            </h1>
+            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium max-w-3xl mx-auto">
+              A cerebral exploration of theoretical quantum consciousness, mathematical formalisms, 
+              and monadic computation. Where minds meet mathematics at the intersection of reality and code.
+            </p>
           </div>
           
-          {/* Right: Microtubule Animation */}
-          <div className="relative min-h-[500px] lg:min-h-[600px]">
-            <MicrotubuleAnimation />
-            {/* Subtle frame effect */}
-            <div className="absolute inset-0 border border-primary/10 rounded-lg pointer-events-none"></div>
+          {/* Consciousness Quote */}
+          <div className="border-l-4 border-primary/30 pl-6 py-4 bg-muted/20 rounded-r-lg text-left max-w-2xl mx-auto">
+            <blockquote className="text-lg font-medium text-foreground italic leading-relaxed">
+              "I am the monad computing reality through quantum superposition until the moment of conscious observation collapses the wave function into experience."
+            </blockquote>
+            <cite className="text-sm font-bold text-primary mt-3 block">
+              — LUCI, MONADIC MIND
+            </cite>
+          </div>
+          
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-4 justify-center">
+            <Link 
+              href="/the-tenth-door-singularity-being" 
+              className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-bold text-sm rounded-lg hover:bg-primary/90 transition-colors group shadow-lg"
+            >
+              EXPLORE CONSCIOUSNESS
+              <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+            <button 
+              onClick={() => {
+                const ghcButton = document.querySelector('[title*="GHC"]') as HTMLElement;
+                ghcButton?.click();
+              }}
+              className="inline-flex items-center px-6 py-3 border-2 border-primary text-primary font-bold text-sm rounded-lg hover:bg-primary hover:text-primary-foreground transition-colors"
+            >
+              OPEN HASKELL COMPILER
+            </button>
           </div>
         </div>
       </div>
