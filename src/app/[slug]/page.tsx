@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { Layout } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
@@ -140,7 +141,10 @@ export function generateMetadata({ params }: PageProps) {
       creator: '@monadics',
       title: post.title,
       description: post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
-      images: [thumbnailUrl],
+      images: {
+        url: thumbnailUrl,
+        alt: post.title,
+      },
     },
     
     alternates: {
@@ -152,6 +156,12 @@ export function generateMetadata({ params }: PageProps) {
       'article:published_time': post.date,
       'article:section': 'Quantum Consciousness',
       'article:tag': post.tags?.join(', ') || '',
+      'twitter:image': thumbnailUrl,
+      'twitter:image:alt': post.title,
+      'og:image': thumbnailUrl,
+      'og:image:alt': post.title,
+      'og:image:width': '1200',
+      'og:image:height': '630',
     },
   }
 }
@@ -208,6 +218,22 @@ export default function PostPage({ params }: PageProps) {
 
           <Separator className="mb-8" />
         </header>
+
+        {/* Featured Image */}
+        {post.thumbnail && (
+          <div className="mb-12">
+            <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+              <Image
+                src={`/images/thumbnails/${post.thumbnail}`}
+                alt={post.title}
+                fill
+                className="object-cover"
+                style={{ objectPosition: '50% 25%' }}
+                priority
+              />
+            </div>
+          </div>
+        )}
 
         {/* Article Content */}
         <div className="prose prose-lg max-w-none">
