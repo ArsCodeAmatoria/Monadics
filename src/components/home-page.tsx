@@ -53,74 +53,79 @@ export function HomePage({ posts, tags }: HomePageProps) {
             <div className="w-24 h-1 bg-primary mx-auto"></div>
           </div>
           
-          {/* Full-Width Hero Feature */}
+          {/* Two-Column Hero Feature */}
           <div className="max-w-7xl mx-auto">
             <Card className="overflow-hidden bg-gradient-to-br from-muted/30 to-muted/10 border-2 border-muted hover:border-primary/20 transition-all duration-300">
               <CardContent className="p-0">
-                {/* Hero Image */}
-                <div className="relative h-80 w-full overflow-hidden">
-                  <Image 
-                    src={`/images/thumbnails/${headlinePost.thumbnail}`}
-                    alt={headlinePost.title}
-                    fill
-                    className="object-cover object-center transition-all duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"></div>
-                  
-                  {/* Floating Badge */}
-                  <div className="absolute top-6 left-6">
-                    <Badge variant="secondary" className="text-xs font-mono bg-background/90 text-primary border-primary/20 backdrop-blur-sm">
-                      MYSTICAL TREATISE
-                    </Badge>
-                  </div>
-                </div>
-                
-                {/* Content Overlay */}
-                <div className="relative -mt-32 mx-6 mb-6 p-8 bg-background/95 backdrop-blur-sm rounded-lg border border-border/50 shadow-lg">
-                  <div className="text-center space-y-6">
-                    <div>
-                      <h3 className="text-3xl md:text-4xl font-black text-primary font-sans leading-tight mb-4">
-                        {headlinePost.title.toUpperCase()}
-                      </h3>
-                      <div className="w-24 h-1 bg-primary mx-auto mb-4"></div>
+                <div className="grid lg:grid-cols-2 gap-0 min-h-[500px] relative overflow-hidden">
+                  {/* Left: Enhanced Image with Blending */}
+                  <div className="relative bg-gradient-to-br from-muted/10 via-background/20 to-muted/30">
+                    <Image 
+                      src={`/images/thumbnails/${headlinePost.thumbnail}`}
+                      alt={headlinePost.title}
+                      fill
+                      className="object-cover object-top transition-all duration-700"
+                      style={{ objectPosition: '50% 25%' }}
+                    />
+                    {/* Gradient overlay for better blending */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60 lg:to-background/80"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent"></div>
+                    
+                    {/* Floating Badge */}
+                    <div className="absolute top-6 left-6 z-10">
+                      <Badge variant="secondary" className="text-xs font-mono bg-background/90 text-primary border-primary/20 backdrop-blur-sm">
+                        MYSTICAL TREATISE
+                      </Badge>
                     </div>
-                    
-                    <p className="text-lg text-muted-foreground font-medium leading-relaxed italic max-w-3xl mx-auto">
-                      {headlinePost.excerpt}
-                    </p>
-                    
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-muted-foreground">
-                      <div className="flex items-center gap-3">
-                        <span className="font-bold text-sm">{headlinePost.author}</span>
-                        <span>•</span>
-                        <time className="font-bold text-sm">{new Date(headlinePost.date).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}</time>
+                  </div>
+                  
+                  {/* Right: Content with Better Blending */}
+                  <div className="flex flex-col justify-center p-8 lg:p-12 bg-gradient-to-bl from-background/95 via-background to-muted/10 relative z-10">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-2xl lg:text-3xl font-black text-primary font-sans leading-tight mb-4">
+                          {headlinePost.title.toUpperCase()}
+                        </h3>
+                        <div className="w-16 h-1 bg-primary mb-6"></div>
                       </div>
                       
-                      {headlinePost.tags && (
-                        <div className="flex flex-wrap gap-2 justify-center">
-                          {headlinePost.tags.slice(0, 3).map((tag) => (
-                            <Badge key={tag} variant="outline" className="text-xs font-bold">
-                              {tag}
-                            </Badge>
-                          ))}
+                      <p className="text-base lg:text-lg text-muted-foreground font-medium leading-relaxed italic">
+                        {headlinePost.excerpt}
+                      </p>
+                      
+                      <div className="space-y-4 text-muted-foreground">
+                        <div className="flex items-center gap-3">
+                          <span className="font-bold text-sm">{headlinePost.author}</span>
+                          <span>•</span>
+                          <time className="font-bold text-sm">{new Date(headlinePost.date).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                          })}</time>
                         </div>
-                      )}
-                    </div>
-                    
-                    <div className="pt-4">
-                      <Link 
-                        href={`/${headlinePost.slug}`}
-                        className="inline-flex items-center px-8 py-4 bg-primary text-primary-foreground font-bold text-base rounded-lg hover:bg-primary/90 transition-colors group shadow-lg"
-                      >
-                        ENTER THE DOOR
-                        <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
+                        
+                        {headlinePost.tags && (
+                          <div className="flex flex-wrap gap-2">
+                            {headlinePost.tags.slice(0, 3).map((tag) => (
+                              <Badge key={tag} variant="outline" className="text-xs font-bold">
+                                {tag}
+                              </Badge>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="pt-2">
+                        <Link 
+                          href={`/${headlinePost.slug}`}
+                          className="inline-flex items-center px-6 py-3 bg-primary text-primary-foreground font-bold text-sm rounded-lg hover:bg-primary/90 transition-colors group shadow-lg"
+                        >
+                          ENTER THE DOOR
+                          <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
