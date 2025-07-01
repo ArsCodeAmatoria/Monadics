@@ -4,10 +4,11 @@ import { useState } from 'react'
 import { PostCard } from '@/components/post-card'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { BlogPost } from '@/lib/blog'
 import { Search } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface HomePageProps {
   posts: BlogPost[]
@@ -58,10 +59,11 @@ export function HomePage({ posts, tags }: HomePageProps) {
               <CardContent className="p-0">
                 {/* Hero Image */}
                 <div className="relative h-80 w-full overflow-hidden">
-                  <img 
+                  <Image 
                     src={`/images/thumbnails/${headlinePost.thumbnail}`}
                     alt={headlinePost.title}
-                    className="w-full h-full object-cover object-center transition-all duration-700"
+                    fill
+                    className="object-cover object-center transition-all duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent"></div>
                   
