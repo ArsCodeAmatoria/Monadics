@@ -4,8 +4,8 @@ import { Layout } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { SocialShare } from '@/components/social-share'
-import { ArticleQuotes } from '@/components/article-quotes'
 import { ArticleSchema } from '@/components/article-schema'
+import { InsightQuote } from '@/components/insight-quote'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -37,6 +37,7 @@ const components = {
       </code>
     )
   },
+  InsightQuote,
 }
 
 interface PageProps {
@@ -169,20 +170,6 @@ export default function PostPage({ params }: PageProps) {
           <Separator className="mb-8" />
         </header>
 
-        {/* Social Share */}
-        <div className="mb-8">
-          <SocialShare 
-            title={post.title}
-            url={articleUrl}
-            description={post.excerpt}
-          />
-        </div>
-
-        {/* Article Quotes */}
-        <div className="mb-12">
-          <ArticleQuotes tags={post.tags} />
-        </div>
-
         {/* Article Content */}
         <div className="prose prose-lg max-w-none">
           <MDXRemote
@@ -197,15 +184,20 @@ export default function PostPage({ params }: PageProps) {
           />
         </div>
 
-        {/* Footer Social Share */}
+        {/* Article Footer */}
         <div className="mt-16 pt-8 border-t border-border/40">
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-2/3">
-              <SocialShare 
-                title={post.title}
-                url={articleUrl}
-                description={post.excerpt}
-              />
+              <div className="mb-8">
+                <h3 className="text-lg font-black font-sans text-primary uppercase mb-4">
+                  SHARE THIS EXPLORATION
+                </h3>
+                <SocialShare 
+                  title={post.title}
+                  url={articleUrl}
+                  description={post.excerpt}
+                />
+              </div>
             </div>
             
             <div className="lg:w-1/3">
