@@ -1,8 +1,10 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { BlogPost } from '@/lib/blog'
 import { formatDate } from '@/lib/utils'
+import { FileText } from 'lucide-react'
 
 interface PostCardProps {
   post: BlogPost
@@ -10,8 +12,31 @@ interface PostCardProps {
 
 export function PostCard({ post }: PostCardProps) {
   return (
-    <Card className="h-full hover:shadow-lg transition-shadow group cursor-pointer border-border/50">
+    <Card className="h-full hover:shadow-lg transition-shadow group cursor-pointer border-border/50 overflow-hidden">
       <Link href={`/${post.slug}`}>
+        {/* Thumbnail Section */}
+        <div className="relative h-48 bg-muted/50 flex items-center justify-center overflow-hidden">
+          {post.thumbnail ? (
+            <Image
+              src={`/images/thumbnails/${post.thumbnail}`}
+              alt={`Thumbnail for ${post.title}`}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full w-full bg-gradient-to-br from-muted/30 to-muted/60">
+              <FileText className="h-16 w-16 text-muted-foreground/40" />
+              <div className="mt-4 text-center px-4">
+                <p className="text-xs font-bold text-muted-foreground/60 uppercase leading-tight">
+                  THEORETICAL EXPLORATION
+                </p>
+              </div>
+            </div>
+          )}
+          {/* Overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent" />
+        </div>
+
         <CardHeader className="space-y-2">
           <h3 className="text-2xl font-black font-sans group-hover:text-primary transition-colors line-clamp-2">
             {post.title.toUpperCase()}

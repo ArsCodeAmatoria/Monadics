@@ -12,6 +12,7 @@ export interface BlogPost {
   tags: string[]
   content: string
   excerpt?: string
+  thumbnail?: string
 }
 
 export function getAllPosts(): BlogPost[] {
