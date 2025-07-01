@@ -80,15 +80,26 @@ export function HomePage({ posts, tags }: HomePageProps) {
             <Card className="overflow-hidden bg-gradient-to-br from-muted/30 to-muted/10 border-2 border-muted hover:border-primary/20 transition-all duration-300">
               <CardContent className="p-0">
                 <div className="grid lg:grid-cols-2 gap-0 min-h-[500px] relative overflow-hidden">
-                  {/* Left: Enhanced Image with Blending */}
+                  {/* Left: Enhanced Video with Blending */}
                   <div className="relative bg-gradient-to-br from-muted/10 via-background/20 to-muted/30">
-                    <Image 
-                      src={`/images/thumbnails/${headlinePost.thumbnail}`}
-                      alt={headlinePost.title}
-                      fill
-                      className="object-cover object-top transition-all duration-700"
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover object-top transition-all duration-700"
                       style={{ objectPosition: '50% 0%' }}
-                    />
+                    >
+                      <source src="/videos/featured.mp4" type="video/mp4" />
+                      {/* Fallback to image if video fails */}
+                      <Image 
+                        src={`/images/thumbnails/${headlinePost.thumbnail}`}
+                        alt={headlinePost.title}
+                        fill
+                        className="object-cover object-top"
+                        style={{ objectPosition: '50% 0%' }}
+                      />
+                    </video>
                     {/* Gradient overlay for better blending */}
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60 lg:to-background/80"></div>
                     <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent"></div>
