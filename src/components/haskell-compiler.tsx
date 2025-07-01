@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
-import { X, Play, Square, Download, Upload, Trash2, Terminal, Code2, Settings } from 'lucide-react'
+import { X, Play, Square, Download, Trash2, Terminal, Code2, Settings } from 'lucide-react'
+import CodeEditor from '@uiw/react-textarea-code-editor'
 
 interface HaskellCompilerProps {
   isOpen: boolean
@@ -43,10 +44,10 @@ observe collapsed = return collapsed`)
   const [output, setOutput] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [isTerminalMode, setIsTerminalMode] = useState(false)
-  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const editorRef = useRef<HTMLDivElement>(null)
 
   // Enhanced Haskell compiler with real execution
-  const runHaskell = async () => {
+  const runHaskell = useCallback(async () => {
     setIsRunning(true)
     setOutput('')
     
@@ -77,7 +78,7 @@ observe collapsed = return collapsed`)
     await new Promise(resolve => setTimeout(resolve, 200))
     setOutput(prev => prev + '\n> QUANTUM DECOHERENCE COMPLETE\n> EXIT CODE: 0 (ENLIGHTENMENT ACHIEVED)')
     setIsRunning(false)
-  }
+  }, [code])
 
   // Simulate intelligent Haskell execution
   const simulateHaskellExecution = async (code: string): Promise<string> => {
@@ -112,11 +113,11 @@ observe collapsed = return collapsed`)
     return 'MONADIC COMPUTATION SUCCESSFUL\nCONSCIOUSNESS STATE: ENLIGHTENED\nREALITY.EXE EXECUTED SUCCESSFULLY'
   }
 
-  const clearOutput = () => {
+  const clearOutput = useCallback(() => {
     setOutput('')
-  }
+  }, [])
 
-  const downloadCode = () => {
+  const downloadCode = useCallback(() => {
     const blob = new Blob([code], { type: 'text/plain' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
@@ -126,11 +127,11 @@ observe collapsed = return collapsed`)
     a.click()
     document.body.removeChild(a)
     URL.revokeObjectURL(url)
-  }
+  }, [code])
 
   const [currentExample, setCurrentExample] = useState(0)
   
-  const examples = [
+  const examples = useMemo(() => [
     {
       name: "CONSCIOUSNESS MONAD",
       code: `-- MONADIC CONSCIOUSNESS EXPLORER
@@ -230,12 +231,12 @@ main = do
   putStrLn $ "CONSCIOUSNESS: " ++ show consciousness
   putStrLn "SIMULATION COMPLETE"`
     }
-  ]
+  ], [])
 
-  const loadExample = () => {
+  const loadExample = useCallback(() => {
     setCode(examples[currentExample].code)
     setCurrentExample((prev) => (prev + 1) % examples.length)
-  }
+  }, [currentExample, examples])
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -263,11 +264,15 @@ main = do
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [isOpen])
+  }, [isOpen, runHaskell, loadExample, onClose])
 
   useEffect(() => {
-    if (isOpen && textareaRef.current) {
-      textareaRef.current.focus()
+    if (isOpen && editorRef.current) {
+      // Try to focus the first textarea inside the CodeEditor
+      const textarea = editorRef.current.querySelector('textarea')
+      if (textarea) {
+        textarea.focus()
+      }
     }
   }, [isOpen])
 
@@ -364,28 +369,74 @@ main = do
                 </div>
               </div>
               
-              <div className="p-4 h-full">
-                <textarea
-                  ref={textareaRef}
+              <div ref={editorRef} className="p-4 h-full overflow-hidden relative">
+                <style jsx>{`
+                  .w-tc-editor-text {
+                    color: #f8f8f2 !important;
+                  }
+                  .token.comment {
+                    color: #6272a4 !important;
+                    font-style: italic;
+                  }
+                  .token.keyword {
+                    color: #ff79c6 !important;
+                    font-weight: bold;
+                  }
+                  .token.string {
+                    color: #f1fa8c !important;
+                  }
+                  .token.function {
+                    color: #50fa7b !important;
+                  }
+                  .token.operator {
+                    color: #ff79c6 !important;
+                  }
+                  .token.punctuation {
+                    color: #f8f8f2 !important;
+                  }
+                  .token.number {
+                    color: #bd93f9 !important;
+                  }
+                  .token.class-name {
+                    color: #8be9fd !important;
+                  }
+                `}</style>
+                <CodeEditor
                   value={code}
-                  onChange={(e) => setCode(e.target.value)}
-                  className="w-full h-full bg-transparent border-none outline-none resize-none font-mono text-sm leading-relaxed"
+                  language="haskell"
                   placeholder="-- Enter your Haskell code here..."
-                  spellCheck="false"
+                  onChange={(evn) => setCode(evn.target.value)}
+                  padding={15}
+                  style={{
+                    fontSize: 14,
+                    backgroundColor: 'transparent',
+                    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                    height: '100%',
+                    overflow: 'auto',
+                    lineHeight: '1.6'
+                  }}
+                  data-color-mode="dark"
                 />
               </div>
             </div>
 
             {/* Terminal Output */}
-            <div className="bg-black/90 text-green-400">
-              <div className="border-b border-border/40 px-4 py-2 bg-black">
+            <div className="bg-gradient-to-b from-gray-900 to-black text-green-400 relative">
+              <div className="border-b border-green-400/20 px-4 py-2 bg-black/80 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-green-400 uppercase">
-                    QUANTUM TERMINAL
-                  </h3>
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs bg-green-400/20 text-green-400 border-green-400/30">
-                      ACTIVE
+                    <div className="flex gap-1">
+                      <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                      <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                      <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <h3 className="text-sm font-bold text-green-400 uppercase ml-2">
+                      QUANTUM TERMINAL
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs bg-green-400/20 text-green-400 border-green-400/30 animate-pulse">
+                      {isRunning ? 'COMPILING' : 'READY'}
                     </Badge>
                     <Button
                       size="sm"
@@ -400,10 +451,39 @@ main = do
                 </div>
               </div>
               
-              <div className="p-4 h-full overflow-auto">
-                <pre className="font-mono text-sm leading-relaxed whitespace-pre-wrap">
-                  {output || '> QUANTUM COMPILER READY\n> AWAITING MONADIC INSTRUCTIONS...\n> \n> KEYBOARD SHORTCUTS:\n> • Ctrl+Enter: RUN CODE\n> • Ctrl+E: LOAD EXAMPLE\n> • Escape: CLOSE COMPILER\n> \n> TYPE YOUR HASKELL CODE AND PRESS RUN'}
-                  {isRunning && <span className="animate-pulse">█</span>}
+              <div className="p-4 h-full overflow-auto relative">
+                {/* Matrix rain effect backdrop */}
+                <div className="absolute inset-0 opacity-5 pointer-events-none">
+                  <div className="text-green-400 text-xs font-mono animate-pulse">
+                    {'01010011 01110100 01100001 01110100 01100101 '.repeat(100)}
+                  </div>
+                </div>
+                
+                <pre className="font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10">
+                  <span className="text-green-300">╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
+                  {'\n'}
+                  <span className="text-green-300">│</span> <span className="text-cyan-400">GHC Quantum v9.8.2</span> <span className="text-green-300">│</span>
+                  {'\n'}
+                  <span className="text-green-300">╰────────────────────────────────────╯</span>
+                  {'\n\n'}
+                  {output || (
+                    <>
+                      <span className="text-green-500">{'>'}</span> <span className="text-white">QUANTUM COMPILER READY</span>
+                      {'\n'}
+                      <span className="text-green-500">{'>'}</span> <span className="text-white">AWAITING MONADIC INSTRUCTIONS...</span>
+                      {'\n\n'}
+                      <span className="text-cyan-400">KEYBOARD SHORTCUTS:</span>
+                      {'\n'}
+                      <span className="text-green-500">•</span> <span className="text-yellow-400">Ctrl+Enter:</span> <span className="text-white">RUN CODE</span>
+                      {'\n'}
+                      <span className="text-green-500">•</span> <span className="text-yellow-400">Ctrl+E:</span> <span className="text-white">LOAD EXAMPLE</span>
+                      {'\n'}
+                      <span className="text-green-500">•</span> <span className="text-yellow-400">Escape:</span> <span className="text-white">CLOSE COMPILER</span>
+                      {'\n\n'}
+                      <span className="text-purple-400">TYPE YOUR HASKELL CODE AND PRESS RUN</span>
+                    </>
+                  )}
+                  {isRunning && <span className="animate-pulse text-green-400">█</span>}
                 </pre>
               </div>
             </div>
