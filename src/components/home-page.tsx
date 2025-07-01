@@ -9,6 +9,7 @@ import { BlogPost } from '@/lib/blog'
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { MicrotubuleAnimation } from '@/components/microtubule-animation'
 
 interface HomePageProps {
   posts: BlogPost[]
@@ -57,14 +58,23 @@ export function HomePage({ posts, tags }: HomePageProps) {
   return (
     <>
       {/* Hero Section */}
-      <div className="text-center mb-16">
-        <h1 className="text-6xl md:text-8xl font-black mb-8 text-primary font-sans">
-          MONADICS
-        </h1>
-        <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
-          A cerebral exploration of theoretical quantum consciousness, mathematical formalisms, 
-          and monadic computation. Where minds meet mathematics at the intersection of reality and code.
-        </p>
+      <div className="relative text-center mb-16 min-h-[60vh] flex flex-col justify-center">
+        {/* Microtubule Animation Background */}
+        <MicrotubuleAnimation />
+        
+        {/* Hero Content */}
+        <div className="relative z-10">
+          <h1 className="text-6xl md:text-8xl font-black mb-8 text-primary font-sans">
+            MONADICS
+          </h1>
+          <p className="text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed font-medium">
+            A cerebral exploration of theoretical quantum consciousness, mathematical formalisms, 
+            and monadic computation. Where minds meet mathematics at the intersection of reality and code.
+          </p>
+        </div>
+        
+        {/* Subtle overlay to enhance text readability */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-background/40 pointer-events-none"></div>
       </div>
 
       {/* Headline Article Section */}
