@@ -9,7 +9,6 @@ import { BlogPost } from '@/lib/blog'
 import { Search, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { MicrotubuleAnimation } from '@/components/microtubule-animation'
 
 interface HomePageProps {
   posts: BlogPost[]
@@ -58,11 +57,8 @@ export function HomePage({ posts, tags }: HomePageProps) {
   return (
     <>
       {/* Hero Section */}
-      <div className="relative mb-16 min-h-[70vh] flex items-center justify-center">
-        {/* Background Animation */}
-        <div className="absolute inset-0 z-0">
-          <MicrotubuleAnimation />
-        </div>
+      <div className="relative mb-16 min-h-[80vh] flex items-center justify-center">
+
         
         <div className="relative z-10 text-center max-w-4xl mx-auto space-y-8">
           <div>
@@ -81,11 +77,14 @@ export function HomePage({ posts, tags }: HomePageProps) {
           {/* Consciousness Quote */}
           <div className="border-l-4 border-primary/30 pl-6 py-4 bg-muted/20 rounded-r-lg text-left max-w-2xl mx-auto">
             <blockquote className="text-lg font-medium text-foreground italic leading-relaxed">
-              &ldquo;I am the monad computing reality through quantum superposition until the moment of conscious observation collapses the wave function into experience.&rdquo;
+              &ldquo;Consciousness cannot be accounted for in physical terms. For consciousness is absolutely fundamental. It cannot be accounted for in terms of anything else.&rdquo;
             </blockquote>
             <cite className="text-sm font-bold text-primary mt-3 block">
-              — LUCI, MONADIC MIND
+              — ERWIN SCHRÖDINGER
             </cite>
+            <p className="text-xs text-muted-foreground mt-1">
+              Nobel Prize-winning physicist, pioneer of quantum mechanics
+            </p>
           </div>
           
           {/* Action Buttons */}
