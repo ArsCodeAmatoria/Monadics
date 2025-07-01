@@ -298,6 +298,158 @@ export function HomePage({ posts, tags }: HomePageProps) {
         </div>
       )}
 
+      {/* Most Popular & Hot Topics Section */}
+      <div className="grid lg:grid-cols-3 gap-8 mb-16">
+        {/* Most Popular - 2/3 width */}
+        <div className="lg:col-span-2">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-primary font-sans mb-2">MOST POPULAR</h2>
+            <div className="w-24 h-1 bg-primary"></div>
+          </div>
+          
+          <div className="space-y-4">
+            {posts.slice(0, 4).map((post, index) => (
+              <Card key={post.slug} className="overflow-hidden hover:shadow-lg transition-all duration-300 border-muted hover:border-primary/20">
+                <CardContent className="p-6">
+                  <div className="flex gap-4">
+                    <div className="flex-shrink-0">
+                      <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                        <span className="text-xl font-black text-primary">{index + 1}</span>
+                      </div>
+                    </div>
+                    <div className="flex-grow">
+                      <Link href={`/${post.slug}`} className="group">
+                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors leading-tight mb-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
+                          {post.excerpt}
+                        </p>
+                        <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                          <time>{new Date(post.date).toLocaleDateString('en-US', { 
+                            month: 'short', 
+                            day: 'numeric' 
+                          })}</time>
+                          {post.tags && (
+                            <div className="flex gap-1">
+                              {post.tags.slice(0, 2).map((tag) => (
+                                <Badge key={tag} variant="outline" className="text-xs">
+                                  {tag}
+                                </Badge>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        {/* Hot Topics - 1/3 width */}
+        <div className="lg:col-span-1">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-primary font-sans mb-2">HOT TOPICS</h2>
+            <div className="w-24 h-1 bg-primary"></div>
+          </div>
+          
+          <Card className="border-muted">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                {tags.slice(0, 8).map((tag, index) => {
+                  const tagPosts = posts.filter(post => post.tags?.includes(tag))
+                  return (
+                    <div 
+                      key={tag} 
+                      className="flex items-center justify-between py-2 border-b border-muted/30 last:border-b-0 cursor-pointer hover:bg-muted/20 -mx-2 px-2 rounded transition-colors"
+                      onClick={() => handleTagChange(tag)}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded flex items-center justify-center">
+                          <span className="text-xs font-bold text-primary">{index + 1}</span>
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm text-foreground">{tag}</div>
+                          <div className="text-xs text-muted-foreground">{tagPosts.length} articles</div>
+                        </div>
+                      </div>
+                      <Badge variant="outline" className="text-xs font-bold">
+                        EXPLORE
+                      </Badge>
+                    </div>
+                  )
+                })}
+              </div>
+              
+              <div className="mt-6 pt-4 border-t border-muted/30">
+                <button 
+                  onClick={() => handleTagChange(null)}
+                  className="w-full px-4 py-2 text-sm font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors"
+                >
+                  VIEW ALL TOPICS
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+
+      {/* Planck Quote Section */}
+      <div className="mb-16">
+        <Card className="overflow-hidden bg-gradient-to-br from-muted/30 to-muted/10 border-2 border-muted hover:border-primary/20 transition-all duration-300">
+          <CardContent className="p-0">
+            <div className="grid lg:grid-cols-2 gap-0 min-h-[400px] relative overflow-hidden">
+              {/* Left: Quote Content */}
+              <div className="flex flex-col justify-center p-8 lg:p-12 bg-gradient-to-br from-background/95 via-background to-muted/10 relative z-10">
+                <div className="space-y-6">
+                  <div className="mb-6">
+                    <Badge variant="outline" className="text-xs font-bold px-3 py-1 border-primary/20 text-primary mb-4">
+                      QUANTUM WISDOM
+                    </Badge>
+                    <div className="w-16 h-1 bg-primary mb-6"></div>
+                  </div>
+                  
+                  <blockquote className="text-2xl lg:text-3xl font-medium text-foreground italic leading-relaxed">
+                    "I regard consciousness as fundamental. I regard matter as derivative from consciousness. 
+                    We cannot get behind consciousness. Everything that we talk about, everything that we regard 
+                    as existing, postulates consciousness."
+                  </blockquote>
+                  
+                  <div className="pt-4">
+                    <cite className="text-lg font-black text-primary">
+                      — MAX PLANCK
+                    </cite>
+                    <p className="text-sm text-muted-foreground font-medium mt-2">
+                      Nobel Prize-winning physicist, father of quantum theory
+                    </p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Right: Featured Video */}
+              <div className="relative bg-gradient-to-bl from-muted/10 via-background/20 to-muted/30">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+                  style={{ objectPosition: '50% 25%' }}
+                >
+                  <source src="/videos/featured1.mp4" type="video/mp4" />
+                </video>
+                {/* Gradient overlay for better blending */}
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent via-transparent to-background/60 lg:to-background/80"></div>
+                <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-transparent to-transparent"></div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {filteredPosts.length === 0 && (
         <div className="text-center py-16">
           <h3 className="text-xl font-semibold mb-2">No articles found</h3>
