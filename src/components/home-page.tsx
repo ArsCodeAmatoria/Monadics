@@ -81,7 +81,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
           {/* Consciousness Quote */}
           <div className="border-l-4 border-primary/30 pl-6 py-4 bg-muted/20 rounded-r-lg text-left max-w-2xl mx-auto">
             <blockquote className="text-lg font-medium text-foreground italic leading-relaxed">
-              "I am the monad computing reality through quantum superposition until the moment of conscious observation collapses the wave function into experience."
+              &ldquo;I am the monad computing reality through quantum superposition until the moment of conscious observation collapses the wave function into experience.&rdquo;
             </blockquote>
             <cite className="text-sm font-bold text-primary mt-3 block">
               — LUCI, MONADIC MIND
@@ -413,9 +413,9 @@ export function HomePage({ posts, tags }: HomePageProps) {
                   </div>
                   
                   <blockquote className="text-2xl lg:text-3xl font-medium text-foreground italic leading-relaxed">
-                    "I regard consciousness as fundamental. I regard matter as derivative from consciousness. 
+                    &ldquo;I regard consciousness as fundamental. I regard matter as derivative from consciousness. 
                     We cannot get behind consciousness. Everything that we talk about, everything that we regard 
-                    as existing, postulates consciousness."
+                    as existing, postulates consciousness.&rdquo;
                   </blockquote>
                   
                   <div className="pt-4">
