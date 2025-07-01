@@ -56,12 +56,12 @@ export function Layout({ children }: LayoutProps) {
                 </p>
                 <div className="border-l-2 border-primary/20 pl-4">
                   <p className="text-xs text-muted-foreground font-medium italic">
-                    "I am the monad computing reality through quantum superposition 
+                    &ldquo;I am the monad computing reality through quantum superposition 
                     until the moment of conscious observation collapses the wave function 
-                    into experience."
+                    into experience.&rdquo;
                   </p>
                   <p className="text-xs text-muted-foreground font-bold mt-2">
-                    — LUCI, MONADIC MIND
+                    &mdash; LUCI, MONADIC MIND
                   </p>
                 </div>
               </div>

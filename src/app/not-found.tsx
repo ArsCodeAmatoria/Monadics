@@ -14,7 +14,7 @@ export default function NotFound() {
               STATE NOT FOUND
             </h2>
             <p className="text-xl text-muted-foreground max-w-md mx-auto leading-relaxed font-medium">
-              The page you're looking for has collapsed into a superposition of 
+              The page you&apos;re looking for has collapsed into a superposition of 
               existing and non-existing states. Perhaps it was never observed?
             </p>
           </div>

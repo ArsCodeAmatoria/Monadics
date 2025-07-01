@@ -3,7 +3,11 @@ import { getAllPosts, getPostBySlug } from '@/lib/blog'
 import { Layout } from '@/components/layout'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
+import { SocialShare } from '@/components/social-share'
+import { ArticleQuotes } from '@/components/article-quotes'
+import { ArticleSchema } from '@/components/article-schema'
 import { formatDate } from '@/lib/utils'
+import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
@@ -11,7 +15,7 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { dracula } from 'react-syntax-highlighter/dist/esm/styles/prism'
 
 const components = {
-  code({ className, children, ...props }: any) {
+  code({ className, children }: { className?: string; children?: React.ReactNode }) {
     const match = /language-(\w+)/.exec(className || '')
     return match ? (
       <SyntaxHighlighter
@@ -24,12 +28,11 @@ const components = {
           lineHeight: '1.5',
         }}
         showLineNumbers={false}
-        {...props}
       >
         {String(children).replace(/\n$/, '')}
       </SyntaxHighlighter>
     ) : (
-      <code className={className} {...props}>
+      <code className={className}>
         {children}
       </code>
     )
@@ -56,17 +59,59 @@ export function generateMetadata({ params }: PageProps) {
     }
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.dev'
+  const articleUrl = `${siteUrl}/${post.slug}`
+  const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
+  
   return {
     title: `${post.title} | Monadics`,
-    description: post.excerpt || `An article by ${post.author}`,
+    description: post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
+    keywords: post.tags?.join(', ') + ', quantum consciousness, mathematics, computation, philosophy',
     authors: [{ name: post.author }],
+    creator: post.author,
+    publisher: 'Monadics',
+    robots: 'index, follow',
+    canonical: articleUrl,
+    
     openGraph: {
       title: post.title,
-      description: post.excerpt || `An article by ${post.author}`,
+      description: post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
       type: 'article',
+      url: articleUrl,
+      siteName: 'Monadics',
       publishedTime: post.date,
+      modifiedTime: post.date,
       authors: [post.author],
       tags: post.tags,
+      images: [
+        {
+          url: thumbnailUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      locale: 'en_US',
+    },
+    
+    twitter: {
+      card: 'summary_large_image',
+      site: '@monadics',
+      creator: '@monadics',
+      title: post.title,
+      description: post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
+      images: [thumbnailUrl],
+    },
+    
+    alternates: {
+      canonical: articleUrl,
+    },
+    
+    other: {
+      'article:author': post.author,
+      'article:published_time': post.date,
+      'article:section': 'Quantum Consciousness',
+      'article:tag': post.tags?.join(', ') || '',
     },
   }
 }
@@ -78,8 +123,22 @@ export default function PostPage({ params }: PageProps) {
     notFound()
   }
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.dev'
+  const articleUrl = `${siteUrl}/${post.slug}`
+  const readingTime = calculateReadingTime(post.content)
+
   return (
     <Layout>
+      <ArticleSchema
+        title={post.title}
+        description={post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`}
+        author={post.author}
+        datePublished={post.date}
+        dateModified={post.date}
+        url={articleUrl}
+        imageUrl={post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : undefined}
+        tags={post.tags}
+      />
       <article className="max-w-4xl mx-auto">
         {/* Article Header */}
         <header className="mb-8">
@@ -92,6 +151,8 @@ export default function PostPage({ params }: PageProps) {
               <span className="font-bold text-lg">{post.author.toUpperCase()}</span>
               <span className="text-xl">•</span>
               <time dateTime={post.date} className="font-bold text-lg">{formatDate(post.date)}</time>
+              <span className="text-xl">•</span>
+              <span className="font-bold text-lg">{formatReadingTime(readingTime)}</span>
             </div>
           </div>
 
@@ -108,6 +169,20 @@ export default function PostPage({ params }: PageProps) {
           <Separator className="mb-8" />
         </header>
 
+        {/* Social Share */}
+        <div className="mb-8">
+          <SocialShare 
+            title={post.title}
+            url={articleUrl}
+            description={post.excerpt}
+          />
+        </div>
+
+        {/* Article Quotes */}
+        <div className="mb-12">
+          <ArticleQuotes tags={post.tags} />
+        </div>
+
         {/* Article Content */}
         <div className="prose prose-lg max-w-none">
           <MDXRemote
@@ -120,6 +195,39 @@ export default function PostPage({ params }: PageProps) {
               },
             }}
           />
+        </div>
+
+        {/* Footer Social Share */}
+        <div className="mt-16 pt-8 border-t border-border/40">
+          <div className="flex flex-col lg:flex-row gap-8">
+            <div className="lg:w-2/3">
+              <SocialShare 
+                title={post.title}
+                url={articleUrl}
+                description={post.excerpt}
+              />
+            </div>
+            
+            <div className="lg:w-1/3">
+              <div className="bg-muted/30 rounded-lg p-6 border">
+                <h3 className="text-lg font-black font-sans text-primary uppercase mb-4">
+                  EXPLORE MORE
+                </h3>
+                <p className="text-sm text-muted-foreground font-medium leading-relaxed">
+                  CONTINUE YOUR JOURNEY THROUGH THE QUANTUM LANDSCAPE OF CONSCIOUSNESS 
+                  AND COMPUTATION WITH MORE THEORETICAL EXPLORATIONS.
+                </p>
+                <div className="mt-4">
+                  <a 
+                    href="/" 
+                    className="text-primary font-bold text-sm hover:text-primary/80 transition-colors uppercase"
+                  >
+                    ALL ARTICLES →
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </article>
     </Layout>
