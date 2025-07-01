@@ -59,7 +59,7 @@ function MicrotubuleStructure() {
   })
 
   const nodeColor = isDark ? '#ffffff' : '#000000'
-  const lineColor = isDark ? '#666666' : '#999999'
+  const lineColor = isDark ? '#cccccc' : '#333333'
 
   return (
     <group ref={meshRef}>
@@ -70,7 +70,7 @@ function MicrotubuleStructure() {
           <meshBasicMaterial 
             color={nodeColor} 
             transparent 
-            opacity={0.6}
+            opacity={isDark ? 0.9 : 0.8}
           />
         </mesh>
       ))}
@@ -97,7 +97,7 @@ function MicrotubuleStructure() {
             <meshBasicMaterial 
               color={lineColor} 
               transparent 
-              opacity={0.4}
+              opacity={isDark ? 0.7 : 0.6}
             />
           </mesh>
         )
@@ -141,7 +141,7 @@ function QuantumField() {
     }
   })
 
-  const particleColor = isDark ? '#444444' : '#cccccc'
+  const particleColor = isDark ? '#888888' : '#555555'
 
   return (
     <points ref={particlesRef}>
@@ -163,7 +163,7 @@ function QuantumField() {
         color={particleColor}
         size={0.1}
         transparent
-        opacity={0.3}
+        opacity={isDark ? 0.6 : 0.5}
         sizeAttenuation
       />
     </points>
@@ -175,7 +175,7 @@ export function MicrotubuleAnimation() {
   const isDark = theme === 'dark'
   
   return (
-    <div className="absolute inset-0 opacity-30">
+    <div className={`absolute inset-0 ${isDark ? 'opacity-60' : 'opacity-50'}`}>
       <Canvas
         camera={{ 
           position: [8, 4, 8], 
@@ -185,8 +185,8 @@ export function MicrotubuleAnimation() {
         }}
         style={{ background: 'transparent' }}
       >
-        <ambientLight intensity={isDark ? 0.3 : 0.5} />
-        <pointLight position={[10, 10, 10]} intensity={isDark ? 0.5 : 0.3} />
+        <ambientLight intensity={isDark ? 0.6 : 0.8} />
+        <pointLight position={[10, 10, 10]} intensity={isDark ? 0.8 : 0.6} />
         
         {/* Main microtubule structure */}
         <MicrotubuleStructure />
