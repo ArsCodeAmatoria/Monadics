@@ -1,8 +1,29 @@
 # Monadics
 
-A cerebral, Wired-style blog exploring theoretical quantum consciousness, mathematical formalisms, and monadic computation. Built for minds operating at the intersection of math, metaphysics, and code.
+<div align="center">
 
-![Image](https://github.com/user-attachments/assets/24437d21-19a7-4956-8b2c-5336a3e7b801)
+![Monadics](https://github.com/user-attachments/assets/24437d21-19a7-4956-8b2c-5336a3e7b801)
+
+## A Cerebral Exploration of Quantum Consciousness and Monadic Computation
+
+*Where minds meet mathematics at the intersection of reality and code*
+
+[![Next.js](https://img.shields.io/badge/Next.js-14.2.30-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4+-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![MDX](https://img.shields.io/badge/MDX-2.3+-1B1F24?style=for-the-badge&logo=mdx&logoColor=white)](https://mdxjs.com/)
+
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+[![License](https://img.shields.io/badge/License-Educational-purple?style=for-the-badge)](LICENSE)
+[![RSS Feed](https://img.shields.io/badge/RSS-Feed_Available-FFA500?style=for-the-badge&logo=rss&logoColor=white)](https://monadics.vercel.app/rss.xml)
+
+</div>
+
+---
+
+## Overview
+
+A sophisticated blog platform exploring theoretical quantum consciousness, mathematical formalisms, and monadic computation. Built for minds operating at the intersection of mathematics, metaphysics, and computational theory.
 
 ## Features
 
