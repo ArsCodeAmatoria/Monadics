@@ -7,6 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { SocialShare } from '@/components/social-share'
 import { ArticleSchema } from '@/components/article-schema'
 import { InsightQuote } from '@/components/insight-quote'
+import { DebugMeta } from '@/components/debug-meta'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
@@ -100,9 +101,22 @@ export function generateMetadata({ params }: PageProps) {
     }
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.dev'
+  // Determine the correct site URL for production
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.dev')
+  
   const articleUrl = `${siteUrl}/${post.slug}`
   const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
+  
+  console.log('🐛 Meta Debug:', {
+    NODE_ENV: process.env.NODE_ENV,
+    VERCEL_URL: process.env.VERCEL_URL,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+    siteUrl,
+    thumbnail: post.thumbnail,
+    thumbnailUrl,
+    articleUrl
+  })
   
   return {
     title: `${post.title} | Monadics`,
@@ -141,10 +155,7 @@ export function generateMetadata({ params }: PageProps) {
       creator: '@monadics',
       title: post.title,
       description: post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
-      images: {
-        url: thumbnailUrl,
-        alt: post.title,
-      },
+      images: [thumbnailUrl],
     },
     
     alternates: {
@@ -152,16 +163,31 @@ export function generateMetadata({ params }: PageProps) {
     },
     
     other: {
+      // Article metadata
       'article:author': post.author,
       'article:published_time': post.date,
       'article:section': 'Quantum Consciousness',
       'article:tag': post.tags?.join(', ') || '',
+      
+      // Twitter Card meta tags (explicit)
+      'twitter:card': 'summary_large_image',
+      'twitter:site': '@monadics',
+      'twitter:creator': '@monadics',
+      'twitter:title': post.title,
+      'twitter:description': post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
       'twitter:image': thumbnailUrl,
       'twitter:image:alt': post.title,
+      
+      // OpenGraph meta tags (explicit)
+      'og:type': 'article',
+      'og:title': post.title,
+      'og:description': post.excerpt || `An exploration of ${post.tags?.join(', ') || 'consciousness and computation'} by ${post.author}`,
       'og:image': thumbnailUrl,
       'og:image:alt': post.title,
       'og:image:width': '1200',
       'og:image:height': '630',
+      'og:url': articleUrl,
+      'og:site_name': 'Monadics',
     },
   }
 }
@@ -173,7 +199,8 @@ export default function PostPage({ params }: PageProps) {
     notFound()
   }
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.dev'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
+                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.dev')
   const articleUrl = `${siteUrl}/${post.slug}`
   const readingTime = calculateReadingTime(post.content)
 
@@ -227,6 +254,7 @@ export default function PostPage({ params }: PageProps) {
                 src={`/images/thumbnails/${post.thumbnail}`}
                 alt={post.title}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
                 style={{ objectPosition: '50% 25%' }}
                 priority
@@ -261,6 +289,7 @@ export default function PostPage({ params }: PageProps) {
                   title={post.title}
                   url={articleUrl}
                   description={post.excerpt}
+                  thumbnail={post.thumbnail}
                 />
               </div>
             </div>
@@ -287,6 +316,7 @@ export default function PostPage({ params }: PageProps) {
           </div>
         </div>
       </article>
+      <DebugMeta post={post} siteUrl={siteUrl} />
     </Layout>
   )
 } 

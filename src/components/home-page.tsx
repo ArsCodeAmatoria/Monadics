@@ -140,6 +140,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
                         src={`/images/thumbnails/${headlinePost.thumbnail}`}
                         alt={headlinePost.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover object-top"
                         style={{ objectPosition: '50% 0%' }}
                       />
