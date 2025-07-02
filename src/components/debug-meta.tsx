@@ -5,7 +5,9 @@ import { BlogPost } from '@/lib/blog'
 export function DebugMeta({ post, siteUrl }: { post: BlogPost, siteUrl: string }) {
   if (process.env.NODE_ENV !== 'development') return null
   
-  const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
+  // Cache busting for Twitter cards - use post date hash for consistency
+  const cacheParam = post.date ? new Date(post.date).getTime().toString().slice(-6) : '1'
+  const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}?v=${cacheParam}` : `${siteUrl}/og-image.png`
   const pageUrl = `${siteUrl}/${post.slug}`
   
   const testImageAccess = () => {

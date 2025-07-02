@@ -2,6 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useState } from 'react'
 import { 
   Twitter, 
   Facebook, 
@@ -10,7 +11,9 @@ import {
   Mail,
   MessageSquare,
   Download,
-  Share
+  Share,
+  Copy,
+  Zap
 } from 'lucide-react'
 
 interface SocialShareProps {
@@ -21,7 +24,11 @@ interface SocialShareProps {
 }
 
 export function SocialShare({ title, url, description, thumbnail }: SocialShareProps) {
-  const encodedUrl = encodeURIComponent(url)
+  const [shortUrl, setShortUrl] = useState<string>('')
+  const [isGenerating, setIsGenerating] = useState(false)
+  
+  const currentUrl = shortUrl || url
+  const encodedUrl = encodeURIComponent(currentUrl)
   const encodedTitle = encodeURIComponent(title)
   const encodedDescription = encodeURIComponent(description || '')
 
@@ -33,9 +40,33 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
     email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
   }
 
+  const generateShortUrl = async () => {
+    if (shortUrl) return // Already generated
+    
+    setIsGenerating(true)
+    try {
+      const response = await fetch('/api/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ url }),
+      })
+      
+      if (response.ok) {
+        const data = await response.json()
+        setShortUrl(data.shortUrl)
+      }
+    } catch (err) {
+      console.error('Failed to generate short URL:', err)
+    } finally {
+      setIsGenerating(false)
+    }
+  }
+
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(currentUrl)
       // You could add a toast notification here
     } catch (err) {
       console.error('Failed to copy link:', err)
@@ -60,17 +91,17 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
         await navigator.share({
           title: title,
           text: `${description || title}\n\n`,
-          url: url,
+          url: currentUrl,
           files: [file]
         })
       } else {
         // Fallback to regular sharing
-        const shareText = `${title}\n\n${description || ''}\n\n${url}`
+        const shareText = `${title}\n\n${description || ''}\n\n${currentUrl}`
         if (navigator.share) {
           await navigator.share({
             title: title,
             text: shareText,
-            url: url
+            url: currentUrl
           })
         } else {
           // Copy to clipboard as final fallback
@@ -109,6 +140,40 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
       <h3 className="text-lg font-black font-sans text-primary uppercase">
         SHARE THIS EXPLORATION
       </h3>
+      
+      {/* Short Link Generation */}
+      <div className="space-y-3 p-4 bg-background/50 rounded-lg border">
+        <div className="flex items-center justify-between">
+          <div>
+            <h4 className="font-bold text-sm text-primary">QUICK SHARE URL</h4>
+            <p className="text-xs text-muted-foreground font-medium">
+              Generate a clean, short link for easy sharing
+            </p>
+          </div>
+          <Button
+            onClick={shortUrl ? copyToClipboard : generateShortUrl}
+            disabled={isGenerating}
+            variant={shortUrl ? "secondary" : "default"}
+            size="sm"
+            className="font-bold text-xs"
+          >
+            {isGenerating ? (
+              <div className="h-4 w-4 mr-2 animate-spin border-2 border-current border-t-transparent rounded-full" />
+            ) : shortUrl ? (
+              <Copy className="h-4 w-4 mr-2" />
+            ) : (
+              <Zap className="h-4 w-4 mr-2" />
+            )}
+            {shortUrl ? 'COPY SHORT URL' : isGenerating ? 'GENERATING...' : 'CREATE SHORT URL'}
+          </Button>
+        </div>
+        
+        {shortUrl && (
+          <div className="p-3 bg-muted/50 rounded border font-mono text-sm break-all">
+            {shortUrl}
+          </div>
+        )}
+      </div>
       
       {/* Smart Sharing with Image */}
       {thumbnail && (

@@ -106,7 +106,9 @@ export function generateMetadata({ params }: PageProps) {
                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.vercel.app')
   
   const articleUrl = `${siteUrl}/${post.slug}`
-  const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
+  // Cache busting for Twitter cards - use post date hash for consistency
+  const cacheParam = post.date ? new Date(post.date).getTime().toString().slice(-6) : '1'
+  const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}?v=${cacheParam}` : `${siteUrl}/og-image.png`
   
   console.log('🐛 Meta Debug:', {
     NODE_ENV: process.env.NODE_ENV,
@@ -203,6 +205,9 @@ export default function PostPage({ params }: PageProps) {
                   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.vercel.app')
   const articleUrl = `${siteUrl}/${post.slug}`
   const readingTime = calculateReadingTime(post.content)
+  
+  // Cache busting for Twitter cards - use post date hash for consistency
+  const cacheParam = post.date ? new Date(post.date).getTime().toString().slice(-6) : '1'
 
   return (
     <Layout>
@@ -213,7 +218,7 @@ export default function PostPage({ params }: PageProps) {
         datePublished={post.date}
         dateModified={post.date}
         url={articleUrl}
-        imageUrl={post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : undefined}
+        imageUrl={post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}?v=${cacheParam}` : undefined}
         tags={post.tags}
       />
       <article className="max-w-4xl mx-auto">
