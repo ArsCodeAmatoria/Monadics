@@ -8,8 +8,7 @@ import {
   Linkedin, 
   Link, 
   Mail,
-  MessageSquare,
-  Copy
+  MessageSquare
 } from 'lucide-react'
 
 interface SocialShareProps {
@@ -68,14 +67,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
 
 
 
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(currentUrl)
-      // You could add a toast notification here
-    } catch (error) {
-      console.error('Failed to copy link:', error)
-    }
-  }
+
 
   // Smart sharing that automatically includes image when possible
   const smartShare = async (platform?: 'twitter' | 'facebook' | 'linkedin' | 'reddit' | 'email') => {
@@ -130,30 +122,6 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
 
   return (
     <div className="flex flex-col space-y-6 p-6 bg-muted/30 rounded-lg border">
-      <h3 className="text-lg font-black font-sans text-primary uppercase">
-        SHARE THIS EXPLORATION
-      </h3>
-      
-      {/* Show short URL when available */}
-      {shortUrl && (
-        <div className="p-3 bg-background/50 rounded-lg border">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 mr-3">
-              <p className="text-xs text-muted-foreground font-medium mb-1">Short URL</p>
-              <p className="font-mono text-sm break-all text-primary">{shortUrl}</p>
-            </div>
-            <Button
-              onClick={copyToClipboard}
-              variant="outline"
-              size="sm"
-              className="font-bold text-xs"
-            >
-              <Copy className="h-4 w-4 mr-2" />
-              COPY
-            </Button>
-          </div>
-        </div>
-      )}
       
 
       <div className="flex flex-wrap gap-3">
@@ -211,16 +179,14 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={copyToClipboard}
+          onClick={() => navigator.clipboard.writeText(currentUrl)}
         >
           <Link className="h-4 w-4 mr-2" />
           COPY LINK
         </Button>
       </div>
       
-      <p className="text-xs text-muted-foreground font-medium text-center">
-        All sharing options automatically use short URLs and include images when available
-      </p>
+
     </div>
   )
 } 
