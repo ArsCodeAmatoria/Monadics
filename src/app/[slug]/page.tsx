@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator'
 import { SocialShare } from '@/components/social-share'
 import { ArticleSchema } from '@/components/article-schema'
 import { InsightQuote } from '@/components/insight-quote'
-import { DebugMeta } from '@/components/debug-meta'
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
@@ -321,7 +321,6 @@ export default function PostPage({ params }: PageProps) {
           </div>
         </div>
       </article>
-      <DebugMeta post={post} siteUrl={siteUrl} />
     </Layout>
   )
 } 
