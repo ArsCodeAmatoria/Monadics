@@ -4,9 +4,15 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from './theme-toggle'
 import { HaskellCompiler } from './haskell-compiler'
-import { Github, Mail, Twitter, Rss, ArrowRight, Terminal } from 'lucide-react'
+import { Github, Mail, Twitter, Rss, ArrowRight, Terminal, ChevronDown, Brain, Code, Atom, BookOpen, Clock, TrendingUp, Hash, Search, User } from 'lucide-react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
+import { CATEGORIES } from '@/lib/blog'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -24,12 +30,173 @@ export function Layout({ children }: LayoutProps) {
           </Link>
           
           <nav className="flex items-center space-x-6">
-            <Link 
-              href="/" 
-              className="text-base font-bold hover:text-primary transition-colors"
-            >
-              ARTICLES
-            </Link>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="text-base font-bold hover:text-primary transition-colors flex items-center gap-1 outline-none">
+                ARTICLES
+                <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent 
+                className="w-[800px] p-6 mt-2" 
+                align="center"
+                sideOffset={8}
+              >
+                <div className="grid grid-cols-4 gap-6">
+                  {/* Row 1: Main Categories */}
+                  <Link 
+                    href="/category/quantum-consciousness"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Brain className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Quantum Consciousness</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Quantum mechanics & consciousness</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/category/monadic-programming"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Code className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Monadic Programming</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Functional programming & monads</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/category/theoretical-physics"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Atom className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Theoretical Physics</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Advanced physics & mathematics</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/category/philosophy"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <BookOpen className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Philosophy</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Consciousness & computation</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Row 2: Quick Navigation */}
+                  <Link 
+                    href="/"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <ArrowRight className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">All Articles</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Browse everything</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Clock className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Latest Posts</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Recent explorations</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Hash className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Tags</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Explore by topic</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
+                    href="/rss.xml"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Rss className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">RSS Feed</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Stay updated</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  {/* Row 3: Additional Links */}
+                  <div className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer">
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Search className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Search</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Find articles</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Link 
+                    href="/about"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <User className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">About LUCI</h3>
+                        <p className="text-xs text-muted-foreground mt-1">The monadic mind</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <div 
+                    onClick={() => setIsCompilerOpen(true)}
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <Terminal className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Haskell GHC</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Live compiler</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all">
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <TrendingUp className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Popular</h3>
+                        <p className="text-xs text-muted-foreground mt-1">Most read articles</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <Link 
               href="/about" 
               className="text-base font-bold hover:text-primary transition-colors"
