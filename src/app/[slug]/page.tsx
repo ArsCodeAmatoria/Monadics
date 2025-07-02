@@ -54,7 +54,7 @@ const components = {
         </div>
         
         {/* Code block without relative positioning */}
-        <div className="rounded-lg overflow-hidden border border-muted">
+        <div className="rounded-lg overflow-hidden">
           <SyntaxHighlighter
             language={match[1]}
             style={dracula}

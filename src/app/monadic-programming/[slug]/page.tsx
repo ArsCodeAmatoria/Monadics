@@ -52,14 +52,32 @@ const components = {
   code: ({ className, children, ...props }: any) => {
     const match = /language-(\w+)/.exec(className || '')
     return match ? (
-      <SyntaxHighlighter
-        style={dracula}
-        language={match[1]}
-        PreTag="div"
-        {...props}
-      >
-        {String(children).replace(/\n$/, '')}
-      </SyntaxHighlighter>
+      <div className="my-6">
+        <div className="flex justify-between items-center mb-2">
+          <Badge variant="secondary" className="text-xs uppercase font-mono bg-muted text-muted-foreground">
+            {match[1]}
+          </Badge>
+        </div>
+        
+        <div className="rounded-lg overflow-hidden">
+          <SyntaxHighlighter
+            language={match[1]}
+            style={dracula}
+            PreTag="div"
+            customStyle={{
+              borderRadius: '0',
+              fontSize: '0.9rem',
+              lineHeight: '1.5',
+              margin: '0',
+              border: 'none'
+            }}
+            showLineNumbers={false}
+            {...props}
+          >
+            {String(children).replace(/\n$/, '')}
+          </SyntaxHighlighter>
+        </div>
+      </div>
     ) : (
       <code className={className} {...props}>
         {children}

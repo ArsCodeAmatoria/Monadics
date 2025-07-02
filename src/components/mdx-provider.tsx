@@ -25,7 +25,7 @@ const Code = ({ className, children }: CodeProps) => {
         </Badge>
       </div>
       
-      <div className="rounded-lg overflow-hidden border border-muted">
+      <div className="rounded-lg overflow-hidden">
         <SyntaxHighlighter
           language={language}
           style={dracula}

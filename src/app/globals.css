@@ -85,7 +85,7 @@
   
   /* Code blocks with Dracula theme integration */
   pre {
-    @apply rounded-lg border;
+    @apply rounded-lg;
   }
   
   /* Article content */
