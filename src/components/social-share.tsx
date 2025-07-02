@@ -1,8 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import Image from 'next/image'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { 
   Twitter, 
   Facebook, 
@@ -10,10 +9,7 @@ import {
   Link, 
   Mail,
   MessageSquare,
-  Download,
-  Share,
-  Copy,
-  Zap
+  Copy
 } from 'lucide-react'
 
 interface SocialShareProps {
@@ -28,7 +24,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
   const [isGenerating, setIsGenerating] = useState(false)
   
   // Automatically generate short URL on component mount
-  const generateShortUrl = async () => {
+  const generateShortUrl = useCallback(async () => {
     if (shortUrl || isGenerating) return
     
     setIsGenerating(true)
@@ -45,17 +41,17 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
         const data = await response.json()
         setShortUrl(data.shortUrl)
       }
-    } catch (err) {
-      console.error('Failed to generate short URL:', err)
+    } catch (error) {
+      console.error('Failed to generate short URL:', error)
     } finally {
       setIsGenerating(false)
     }
-  }
+  }, [url, shortUrl, isGenerating])
 
   // Auto-generate short URL when component mounts
   useEffect(() => {
     generateShortUrl()
-  }, [url])
+  }, [url, generateShortUrl])
   
   const currentUrl = shortUrl || url
   const encodedUrl = encodeURIComponent(currentUrl)
@@ -76,8 +72,8 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
     try {
       await navigator.clipboard.writeText(currentUrl)
       // You could add a toast notification here
-    } catch (err) {
-      console.error('Failed to copy link:', err)
+    } catch (error) {
+      console.error('Failed to copy link:', error)
     }
   }
 
@@ -103,8 +99,8 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           })
           return // Success!
         }
-      } catch (err) {
-        console.error('Failed to share with image:', err)
+      } catch (error) {
+        console.error('Failed to share with image:', error)
         // Fall through to platform-specific sharing
       }
     }
@@ -122,7 +118,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
             text: shareText,
             url: currentUrl
           })
-        } catch (err) {
+        } catch (error) {
           // Copy to clipboard as final fallback
           await navigator.clipboard.writeText(shareText)
         }
@@ -159,25 +155,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
         </div>
       )}
       
-      {/* Smart Share Button - Primary Action */}
-      <div className="text-center">
-        <Button
-          onClick={() => smartShare()}
-          className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-sm px-6 py-3 mb-3 w-full"
-          disabled={isGenerating}
-        >
-          {isGenerating ? (
-            <div className="h-4 w-4 mr-2 animate-spin border-2 border-current border-t-transparent rounded-full" />
-          ) : (
-            <Share className="h-4 w-4 mr-2" />
-          )}
-          {isGenerating ? 'PREPARING...' : 'SMART SHARE'}
-        </Button>
-        <p className="text-xs text-muted-foreground font-medium">
-          Automatically includes {thumbnail ? 'image, ' : ''}short URL, title & description
-        </p>
-      </div>
-      
+
       <div className="flex flex-wrap gap-3">
         <Button
           variant="outline"
