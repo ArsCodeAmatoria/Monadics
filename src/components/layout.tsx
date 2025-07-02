@@ -12,7 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
-import { CATEGORIES } from '@/lib/blog'
 
 interface LayoutProps {
   children: React.ReactNode
