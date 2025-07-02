@@ -8,12 +8,14 @@ import { FileText } from 'lucide-react'
 
 interface PostCardProps {
   post: BlogPost
+  linkPrefix?: string
 }
 
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post, linkPrefix }: PostCardProps) {
+  const postUrl = linkPrefix ? `${linkPrefix}/${post.slug}` : `/${post.slug}`
   return (
     <Card className="h-full hover:shadow-lg transition-shadow group cursor-pointer border-border/50 overflow-hidden">
-      <Link href={`/${post.slug}`}>
+      <Link href={postUrl}>
         {/* Thumbnail Section */}
         <div className="relative h-48 bg-muted/50 flex items-center justify-center overflow-hidden">
           {post.thumbnail ? (
