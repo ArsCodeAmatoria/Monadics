@@ -69,39 +69,13 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
 
 
 
-  // Smart sharing that automatically includes image when possible
+  // Smart sharing that relies on meta tags for proper image display
   const smartShare = async (platform?: 'twitter' | 'facebook' | 'linkedin' | 'reddit' | 'email') => {
-    // If we have a thumbnail, try to share with image first
-    if (thumbnail) {
-      try {
-        const response = await fetch(`/images/thumbnails/${thumbnail}`)
-        const blob = await response.blob()
-        
-        const file = new File([blob], `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.jpg`, {
-          type: blob.type,
-        })
-        
-        // Try Web Share API with image first
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            title: title,
-            text: `${description || title}\n\n`,
-            url: currentUrl,
-            files: [file]
-          })
-          return // Success!
-        }
-      } catch (error) {
-        console.error('Failed to share with image:', error)
-        // Fall through to platform-specific sharing
-      }
-    }
-    
-    // Platform-specific sharing as fallback
+    // Platform-specific sharing for best image display
     if (platform) {
       window.open(shareLinks[platform], '_blank')
     } else {
-      // Generic Web Share API fallback
+      // Generic Web Share API fallback (without file attachment)
       const shareText = `${title}\n\n${description || ''}\n\n${currentUrl}`
       if (navigator.share) {
         try {
