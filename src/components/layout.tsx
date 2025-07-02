@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from './theme-toggle'
 import { HaskellCompiler } from './haskell-compiler'
-import { Github, Mail, Twitter, Rss, ArrowRight, Terminal, ChevronDown, Brain, Code, Atom, BookOpen, Clock, TrendingUp, Hash, Search, User } from 'lucide-react'
+import { Github, Mail, Twitter, Rss, ArrowRight, Terminal, ChevronDown, Brain, Code, Atom, BookOpen, Clock, TrendingUp, Hash, Search, User, Menu, X } from 'lucide-react'
 import { Input } from './ui/input'
 import { Button } from './ui/button'
 import {
@@ -19,27 +19,29 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const [isCompilerOpen, setIsCompilerOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background overflow-x-hidden">
       <header className="sticky top-0 z-50 border-b border-border/40 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/80">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" className="text-3xl font-black text-primary font-sans">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-full overflow-x-hidden">
+          <Link href="/" className="text-2xl sm:text-3xl font-black text-primary font-sans">
             MONADICS
           </Link>
           
-          <nav className="flex items-center space-x-6">
+          {/* Desktop Navigation */}
+          <nav className="hidden lg:flex items-center space-x-6">
             <DropdownMenu>
               <DropdownMenuTrigger className="text-base font-bold hover:text-primary transition-colors flex items-center gap-1 outline-none">
                 ARTICLES
                 <ChevronDown className="h-4 w-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent 
-                className="w-[800px] p-6 mt-2" 
+                className="w-[95vw] max-w-[800px] p-4 md:p-6 mt-2" 
                 align="center"
                 sideOffset={8}
               >
-                <div className="grid grid-cols-4 gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
                   {/* Row 1: Main Categories */}
                   <Link 
                     href="/category/quantum-consciousness"
@@ -213,17 +215,157 @@ export function Layout({ children }: LayoutProps) {
             </Button>
             <ThemeToggle />
           </nav>
+
+          {/* Mobile Navigation */}
+          <div className="lg:hidden flex items-center space-x-4">
+            <ThemeToggle />
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-primary hover:bg-muted/50"
+            >
+              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </Button>
+          </div>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8">
+      {/* Mobile Menu Panel */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-[73px] z-40 bg-background/95 backdrop-blur-xl">
+          <div className="container mx-auto px-4 py-6 h-full overflow-y-auto">
+            
+            {/* Main Categories */}
+            <div className="mb-8">
+              <h3 className="text-lg font-black text-primary uppercase mb-4">Categories</h3>
+              <div className="space-y-3">
+                <Link 
+                  href="/category/quantum-consciousness"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Brain className="h-6 w-6 text-primary mr-3" />
+                  <div>
+                    <h4 className="font-bold text-sm text-foreground uppercase">Quantum Consciousness</h4>
+                    <p className="text-xs text-muted-foreground">Quantum mechanics & consciousness</p>
+                  </div>
+                </Link>
+
+                <Link 
+                  href="/category/monadic-programming"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Code className="h-6 w-6 text-primary mr-3" />
+                  <div>
+                    <h4 className="font-bold text-sm text-foreground uppercase">Monadic Programming</h4>
+                    <p className="text-xs text-muted-foreground">Functional programming & monads</p>
+                  </div>
+                </Link>
+
+                <Link 
+                  href="/category/theoretical-physics"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Atom className="h-6 w-6 text-primary mr-3" />
+                  <div>
+                    <h4 className="font-bold text-sm text-foreground uppercase">Theoretical Physics</h4>
+                    <p className="text-xs text-muted-foreground">Advanced physics & mathematics</p>
+                  </div>
+                </Link>
+
+                <Link 
+                  href="/category/philosophy"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <BookOpen className="h-6 w-6 text-primary mr-3" />
+                  <div>
+                    <h4 className="font-bold text-sm text-foreground uppercase">Philosophy</h4>
+                    <p className="text-xs text-muted-foreground">Consciousness & computation</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Quick Navigation */}
+            <div className="mb-8">
+              <h3 className="text-lg font-black text-primary uppercase mb-4">Navigation</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <Link 
+                  href="/"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <ArrowRight className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">All Articles</span>
+                </Link>
+
+                <Link 
+                  href="/about"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">About</span>
+                </Link>
+
+                <Link 
+                  href="/rss.xml"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Rss className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">RSS Feed</span>
+                </Link>
+
+                <div 
+                  onClick={() => {
+                    setIsCompilerOpen(true)
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer"
+                >
+                  <Terminal className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">Haskell GHC</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Utilities */}
+            <div className="mb-8">
+              <h3 className="text-lg font-black text-primary uppercase mb-4">Utilities</h3>
+              <div className="grid grid-cols-1 gap-3">
+                <div className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer">
+                  <Search className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">Search Articles</span>
+                </div>
+
+                <div className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer">
+                  <Hash className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">Browse Tags</span>
+                </div>
+
+                <div className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all cursor-pointer">
+                  <TrendingUp className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">Popular Posts</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <main className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
         {children}
       </main>
 
       <footer className="border-t border-border/40 mt-16 bg-muted/30">
         <div className="container mx-auto px-4 py-16">
           {/* Main Footer Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-12">
             
             {/* Philosophy Column */}
             <div className="space-y-6">
