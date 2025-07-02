@@ -103,7 +103,7 @@ export function generateMetadata({ params }: PageProps) {
 
   // Determine the correct site URL for production
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.dev')
+                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.vercel.app')
   
   const articleUrl = `${siteUrl}/${post.slug}`
   const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
@@ -200,7 +200,7 @@ export default function PostPage({ params }: PageProps) {
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.dev')
+                  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://monadics.vercel.app')
   const articleUrl = `${siteUrl}/${post.slug}`
   const readingTime = calculateReadingTime(post.content)
 

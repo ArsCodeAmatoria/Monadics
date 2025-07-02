@@ -2,7 +2,7 @@ import { getAllPosts } from './blog'
 
 export function generateRssFeed() {
   const posts = getAllPosts()
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.dev'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.vercel.app'
 
   const rssItems = posts
     .map((post) => {

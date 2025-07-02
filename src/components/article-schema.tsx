@@ -33,7 +33,7 @@ export function ArticleSchema({
       name: 'Monadics',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://monadics.dev/logo.png',
+        url: 'https://monadics.vercel.app/logo.png',
       },
     },
     datePublished: datePublished,
@@ -57,7 +57,7 @@ export function ArticleSchema({
     isPartOf: {
       '@type': 'Website',
       name: 'Monadics',
-      url: 'https://monadics.dev',
+      url: 'https://monadics.vercel.app',
     },
     about: [
       {
