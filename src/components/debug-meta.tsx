@@ -1,3 +1,5 @@
+'use client'
+
 export function DebugMeta({ post, siteUrl }: { post: any, siteUrl: string }) {
   if (process.env.NODE_ENV !== 'development') return null
   
