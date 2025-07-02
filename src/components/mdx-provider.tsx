@@ -7,6 +7,7 @@ import { ReactNode, HTMLAttributes } from 'react'
 import { InsightQuote } from './insight-quote'
 import { Badge } from './ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from './ui/table'
 
 interface CodeProps extends HTMLAttributes<HTMLElement> {
   className?: string
@@ -73,6 +74,12 @@ const components = {
   code: Code,
   InsightQuote,
   ContentCard,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
   h1: (props: HTMLAttributes<HTMLHeadingElement>) => <h1 className="text-3xl font-semibold mb-6 text-primary font-sans" {...props} />,
   h2: (props: HTMLAttributes<HTMLHeadingElement>) => <h2 className="text-2xl font-semibold mb-4 mt-8 text-primary font-sans" {...props} />,
   h3: (props: HTMLAttributes<HTMLHeadingElement>) => <h3 className="text-xl font-semibold mb-3 mt-6 font-sans" {...props} />,
