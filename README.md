@@ -2,7 +2,7 @@
 
 <div align="center">
 
-![Monadics](https://github.com/user-attachments/assets/24437d21-19a7-4956-8b2c-5336a3e7b801)
+![Image](https://github.com/user-attachments/assets/9c17484b-abb7-4b10-8481-c5d0ccd76e89)
 
 ## A Cerebral Exploration of Quantum Consciousness and Monadic Computation
 
