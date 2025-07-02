@@ -9,6 +9,7 @@ import { ArticleSchema } from '@/components/article-schema'
 import { InsightQuote } from '@/components/insight-quote'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -79,6 +80,12 @@ const components = {
   },
   InsightQuote,
   ContentCard,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 }
 
 interface PageProps {

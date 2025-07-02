@@ -11,6 +11,7 @@ import { PostCard } from '@/components/post-card'
 import { generateBreadcrumbSchema } from '@/lib/seo'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -67,6 +68,12 @@ const components = {
   },
   ContentCard,
   InsightQuote,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 }
 
 interface PageProps {
