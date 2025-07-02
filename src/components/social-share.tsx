@@ -110,7 +110,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
             text: shareText,
             url: currentUrl
           })
-        } catch (error) {
+        } catch {
           // Copy to clipboard as final fallback
           await navigator.clipboard.writeText(shareText)
         }
