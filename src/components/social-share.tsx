@@ -1,7 +1,7 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import { 
   Twitter, 
   Facebook, 
@@ -18,40 +18,8 @@ interface SocialShareProps {
 }
 
 export function SocialShare({ title, url, description }: SocialShareProps) {
-  const [shortUrl, setShortUrl] = useState<string>('')
-  const [isGenerating, setIsGenerating] = useState(false)
-  
-  // Automatically generate short URL on component mount
-  const generateShortUrl = useCallback(async () => {
-    if (shortUrl || isGenerating) return
-    
-    setIsGenerating(true)
-    try {
-      const response = await fetch('/api/shorten', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ url }),
-      })
-      
-      if (response.ok) {
-        const data = await response.json()
-        setShortUrl(data.shortUrl)
-      }
-    } catch (error) {
-      console.error('Failed to generate short URL:', error)
-    } finally {
-      setIsGenerating(false)
-    }
-  }, [url, shortUrl, isGenerating])
-
-  // Auto-generate short URL when component mounts
-  useEffect(() => {
-    generateShortUrl()
-  }, [url, generateShortUrl])
-  
-  const currentUrl = shortUrl || url
+  // Use original URL directly for reliable sharing
+  const currentUrl = url
   const encodedUrl = encodeURIComponent(currentUrl)
   const encodedTitle = encodeURIComponent(title)
   const encodedDescription = encodeURIComponent(description || '')
