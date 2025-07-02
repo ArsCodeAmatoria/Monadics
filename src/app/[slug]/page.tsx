@@ -294,7 +294,6 @@ export default function PostPage({ params }: PageProps) {
                   title={post.title}
                   url={articleUrl}
                   description={post.excerpt}
-                  thumbnail={post.thumbnail}
                 />
               </div>
             </div>

@@ -15,10 +15,9 @@ interface SocialShareProps {
   title: string
   url: string
   description?: string
-  thumbnail?: string
 }
 
-export function SocialShare({ title, url, description, thumbnail }: SocialShareProps) {
+export function SocialShare({ title, url, description }: SocialShareProps) {
   const [shortUrl, setShortUrl] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
   
