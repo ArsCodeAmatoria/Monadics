@@ -24,7 +24,7 @@ export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <header className="sticky top-0 z-50 border-b border-border/40 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-background/80">
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between max-w-full overflow-x-hidden">
+        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <Link href="/" className="text-2xl sm:text-3xl font-black text-primary font-sans">
             MONADICS
           </Link>
@@ -358,7 +358,7 @@ export function Layout({ children }: LayoutProps) {
         </div>
       )}
 
-      <main className="container mx-auto px-4 py-8 max-w-full overflow-x-hidden">
+      <main className="container mx-auto px-4 py-8">
         {children}
       </main>
 
