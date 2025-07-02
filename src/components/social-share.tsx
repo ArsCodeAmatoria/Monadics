@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { 
   Twitter, 
   Facebook, 
@@ -27,21 +27,9 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
   const [shortUrl, setShortUrl] = useState<string>('')
   const [isGenerating, setIsGenerating] = useState(false)
   
-  const currentUrl = shortUrl || url
-  const encodedUrl = encodeURIComponent(currentUrl)
-  const encodedTitle = encodeURIComponent(title)
-  const encodedDescription = encodeURIComponent(description || '')
-
-  const shareLinks = {
-    twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
-    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
-    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
-    reddit: `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
-    email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
-  }
-
+  // Automatically generate short URL on component mount
   const generateShortUrl = async () => {
-    if (shortUrl) return // Already generated
+    if (shortUrl || isGenerating) return
     
     setIsGenerating(true)
     try {
@@ -64,6 +52,26 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
     }
   }
 
+  // Auto-generate short URL when component mounts
+  useEffect(() => {
+    generateShortUrl()
+  }, [url])
+  
+  const currentUrl = shortUrl || url
+  const encodedUrl = encodeURIComponent(currentUrl)
+  const encodedTitle = encodeURIComponent(title)
+  const encodedDescription = encodeURIComponent(description || '')
+
+  const shareLinks = {
+    twitter: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}`,
+    facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
+    linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`,
+    reddit: `https://reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}`,
+    email: `mailto:?subject=${encodedTitle}&body=${encodedDescription}%0A%0A${encodedUrl}`,
+  }
+
+
+
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(currentUrl)
@@ -73,65 +81,54 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
     }
   }
 
-  const shareWithImage = async () => {
-    if (!thumbnail) return
-    
-    try {
-      // Fetch the image as a blob
-      const response = await fetch(`/images/thumbnails/${thumbnail}`)
-      const blob = await response.blob()
-      
-      // Create a File object from the blob
-      const file = new File([blob], `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.jpg`, {
-        type: blob.type,
-      })
-      
-      // Check if Web Share API is supported and can share files
-      if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: title,
-          text: `${description || title}\n\n`,
-          url: currentUrl,
-          files: [file]
+  // Smart sharing that automatically includes image when possible
+  const smartShare = async (platform?: 'twitter' | 'facebook' | 'linkedin' | 'reddit' | 'email') => {
+    // If we have a thumbnail, try to share with image first
+    if (thumbnail) {
+      try {
+        const response = await fetch(`/images/thumbnails/${thumbnail}`)
+        const blob = await response.blob()
+        
+        const file = new File([blob], `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.jpg`, {
+          type: blob.type,
         })
-      } else {
-        // Fallback to regular sharing
-        const shareText = `${title}\n\n${description || ''}\n\n${currentUrl}`
-        if (navigator.share) {
+        
+        // Try Web Share API with image first
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            title: title,
+            text: `${description || title}\n\n`,
+            url: currentUrl,
+            files: [file]
+          })
+          return // Success!
+        }
+      } catch (err) {
+        console.error('Failed to share with image:', err)
+        // Fall through to platform-specific sharing
+      }
+    }
+    
+    // Platform-specific sharing as fallback
+    if (platform) {
+      window.open(shareLinks[platform], '_blank')
+    } else {
+      // Generic Web Share API fallback
+      const shareText = `${title}\n\n${description || ''}\n\n${currentUrl}`
+      if (navigator.share) {
+        try {
           await navigator.share({
             title: title,
             text: shareText,
             url: currentUrl
           })
-        } else {
+        } catch (err) {
           // Copy to clipboard as final fallback
           await navigator.clipboard.writeText(shareText)
-          alert('Share content copied to clipboard! You can now paste it and manually attach the image.')
         }
+      } else {
+        await navigator.clipboard.writeText(shareText)
       }
-    } catch (err) {
-      console.error('Failed to share:', err)
-      // Fallback to opening Twitter
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodedUrl}`, '_blank')
-    }
-  }
-
-  const downloadImage = async () => {
-    if (!thumbnail) return
-    
-    try {
-      const response = await fetch(`/images/thumbnails/${thumbnail}`)
-      const blob = await response.blob()
-      const url = window.URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = url
-      a.download = `${title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}-thumbnail.jpg`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      window.URL.revokeObjectURL(url)
-    } catch (err) {
-      console.error('Failed to download image:', err)
     }
   }
 
@@ -141,99 +138,52 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
         SHARE THIS EXPLORATION
       </h3>
       
-      {/* Short Link Generation */}
-      <div className="space-y-3 p-4 bg-background/50 rounded-lg border">
-        <div className="flex items-center justify-between">
-          <div>
-            <h4 className="font-bold text-sm text-primary">QUICK SHARE URL</h4>
-            <p className="text-xs text-muted-foreground font-medium">
-              Generate a clean, short link for easy sharing
-            </p>
-          </div>
-          <Button
-            onClick={shortUrl ? copyToClipboard : generateShortUrl}
-            disabled={isGenerating}
-            variant={shortUrl ? "secondary" : "default"}
-            size="sm"
-            className="font-bold text-xs"
-          >
-            {isGenerating ? (
-              <div className="h-4 w-4 mr-2 animate-spin border-2 border-current border-t-transparent rounded-full" />
-            ) : shortUrl ? (
-              <Copy className="h-4 w-4 mr-2" />
-            ) : (
-              <Zap className="h-4 w-4 mr-2" />
-            )}
-            {shortUrl ? 'COPY SHORT URL' : isGenerating ? 'GENERATING...' : 'CREATE SHORT URL'}
-          </Button>
-        </div>
-        
-        {shortUrl && (
-          <div className="p-3 bg-muted/50 rounded border font-mono text-sm break-all">
-            {shortUrl}
-          </div>
-        )}
-      </div>
-      
-      {/* Smart Sharing with Image */}
-      {thumbnail && (
-        <div className="space-y-4">
-          <div className="relative w-full h-48 rounded-lg overflow-hidden border-2 border-primary/20">
-            <Image
-              src={`/images/thumbnails/${thumbnail}`}
-              alt={title}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover"
-              style={{ objectPosition: '50% 25%' }}
-            />
-          </div>
-          
-          {/* Smart Share Button */}
-          <div className="text-center">
-            <Button
-              onClick={shareWithImage}
-              className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-sm px-6 py-3 mb-3"
-            >
-              <Share className="h-4 w-4 mr-2" />
-              SHARE WITH IMAGE
-            </Button>
-            <p className="text-xs text-muted-foreground font-medium">
-              Automatically includes title, description, URL, and image
-            </p>
-          </div>
-          
-          {/* Fallback Options */}
-          <details className="group">
-            <summary className="cursor-pointer text-xs text-muted-foreground font-medium hover:text-primary transition-colors">
-              Manual sharing options ↓
-            </summary>
-            <div className="mt-3 pt-3 border-t border-muted/30">
-              <div className="flex justify-between items-center">
-                <p className="text-xs text-muted-foreground font-medium">
-                  Download image for manual attachment
-                </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="font-bold text-xs"
-                  onClick={downloadImage}
-                >
-                  <Download className="h-4 w-4 mr-2" />
-                  DOWNLOAD
-                </Button>
-              </div>
+      {/* Show short URL when available */}
+      {shortUrl && (
+        <div className="p-3 bg-background/50 rounded-lg border">
+          <div className="flex items-center justify-between">
+            <div className="flex-1 mr-3">
+              <p className="text-xs text-muted-foreground font-medium mb-1">Short URL</p>
+              <p className="font-mono text-sm break-all text-primary">{shortUrl}</p>
             </div>
-          </details>
+            <Button
+              onClick={copyToClipboard}
+              variant="outline"
+              size="sm"
+              className="font-bold text-xs"
+            >
+              <Copy className="h-4 w-4 mr-2" />
+              COPY
+            </Button>
+          </div>
         </div>
       )}
+      
+      {/* Smart Share Button - Primary Action */}
+      <div className="text-center">
+        <Button
+          onClick={() => smartShare()}
+          className="bg-primary text-primary-foreground hover:bg-primary/90 font-bold text-sm px-6 py-3 mb-3 w-full"
+          disabled={isGenerating}
+        >
+          {isGenerating ? (
+            <div className="h-4 w-4 mr-2 animate-spin border-2 border-current border-t-transparent rounded-full" />
+          ) : (
+            <Share className="h-4 w-4 mr-2" />
+          )}
+          {isGenerating ? 'PREPARING...' : 'SMART SHARE'}
+        </Button>
+        <p className="text-xs text-muted-foreground font-medium">
+          Automatically includes {thumbnail ? 'image, ' : ''}short URL, title & description
+        </p>
+      </div>
       
       <div className="flex flex-wrap gap-3">
         <Button
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={() => window.open(shareLinks.twitter, '_blank')}
+          onClick={() => smartShare('twitter')}
         >
           <Twitter className="h-4 w-4 mr-2" />
           TWITTER
@@ -243,7 +193,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={() => window.open(shareLinks.facebook, '_blank')}
+          onClick={() => smartShare('facebook')}
         >
           <Facebook className="h-4 w-4 mr-2" />
           FACEBOOK
@@ -253,7 +203,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={() => window.open(shareLinks.linkedin, '_blank')}
+          onClick={() => smartShare('linkedin')}
         >
           <Linkedin className="h-4 w-4 mr-2" />
           LINKEDIN
@@ -263,7 +213,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={() => window.open(shareLinks.reddit, '_blank')}
+          onClick={() => smartShare('reddit')}
         >
           <MessageSquare className="h-4 w-4 mr-2" />
           REDDIT
@@ -273,7 +223,7 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
           variant="outline"
           size="sm"
           className="font-bold text-xs"
-          onClick={() => window.open(shareLinks.email, '_blank')}
+          onClick={() => smartShare('email')}
         >
           <Mail className="h-4 w-4 mr-2" />
           EMAIL
@@ -290,11 +240,8 @@ export function SocialShare({ title, url, description, thumbnail }: SocialShareP
         </Button>
       </div>
       
-      <p className="text-xs text-muted-foreground font-medium">
-        {thumbnail ? 
-          'Use "SHARE WITH IMAGE" for automatic image attachment, or manual sharing options below' :
-          'SPREAD THE QUANTUM CONSCIOUSNESS'
-        }
+      <p className="text-xs text-muted-foreground font-medium text-center">
+        All sharing options automatically use short URLs and include images when available
       </p>
     </div>
   )
