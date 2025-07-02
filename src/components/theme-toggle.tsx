@@ -13,7 +13,7 @@ export function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-16 h-10 bg-muted/30 rounded-lg animate-pulse" />
+      <div className="w-14 h-8 bg-muted/30 rounded-full animate-pulse border border-border/40" />
     )
   }
 
@@ -22,59 +22,79 @@ export function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
-      className="group relative focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 rounded-lg transition-all duration-200 hover:scale-105"
+      className="group relative focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 rounded-full transition-all duration-200 hover:scale-105"
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
-      {/* Light Switch Plate */}
-      <div className="relative w-16 h-24 bg-gradient-to-b from-slate-100 to-slate-200 dark:from-slate-700 dark:to-slate-800 rounded-lg shadow-md border border-slate-300 dark:border-slate-600">
+      {/* Switch Housing - Realistic Toggle Switch */}
+      <div className="relative w-14 h-8 bg-gradient-to-br from-background to-muted border-2 border-border/60 rounded-full shadow-inner transition-all duration-300 group-hover:border-primary/40">
         
-        {/* Switch Housing */}
-        <div className="absolute inset-x-2 top-2 bottom-2 bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-md shadow-inner border border-slate-200 dark:border-slate-700">
+        {/* Inner Track */}
+        <div className={`absolute inset-1 rounded-full transition-all duration-300 shadow-inner ${
+          isLightOn 
+            ? 'bg-gradient-to-r from-amber-100 to-amber-200 dark:from-amber-900/30 dark:to-amber-800/30' 
+            : 'bg-gradient-to-r from-slate-200 to-slate-300 dark:from-slate-800 dark:to-slate-900'
+        }`}>
           
-          {/* ON/OFF Labels */}
-          <div className="absolute top-1 left-0 right-0 text-center">
-            <span className={`text-[8px] font-bold transition-colors ${isLightOn ? 'text-green-600 dark:text-green-400' : 'text-slate-400'}`}>
+          {/* Track Labels */}
+          <div className="absolute inset-0 flex items-center justify-between px-2">
+            <span className={`text-[7px] font-black transition-all duration-300 ${
+              isLightOn 
+                ? 'text-amber-600 dark:text-amber-400 opacity-100' 
+                : 'text-muted-foreground/40 opacity-50'
+            }`}>
               ON
             </span>
-          </div>
-          <div className="absolute bottom-1 left-0 right-0 text-center">
-            <span className={`text-[8px] font-bold transition-colors ${!isLightOn ? 'text-red-600 dark:text-red-400' : 'text-slate-400'}`}>
+            <span className={`text-[7px] font-black transition-all duration-300 ${
+              !isLightOn 
+                ? 'text-slate-600 dark:text-slate-400 opacity-100' 
+                : 'text-muted-foreground/40 opacity-50'
+            }`}>
               OFF
             </span>
           </div>
-          
-          {/* Switch Toggle */}
-          <div 
-            className={`absolute left-1/2 w-8 h-6 -ml-4 bg-gradient-to-b transition-all duration-300 ease-out rounded-sm shadow-lg border ${
-              isLightOn 
-                ? 'top-2 from-slate-200 to-slate-300 dark:from-slate-300 dark:to-slate-400 border-slate-300 dark:border-slate-400' 
-                : 'bottom-2 from-slate-300 to-slate-400 dark:from-slate-400 dark:to-slate-500 border-slate-400 dark:border-slate-500'
-            }`}
-          >
-            {/* Toggle Screw Details */}
-            <div className="absolute top-1 left-1 w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
-            <div className="absolute top-1 right-1 w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
-            <div className="absolute bottom-1 left-1 w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
-            <div className="absolute bottom-1 right-1 w-1 h-1 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
-          </div>
-          
-          {/* LED Indicator */}
-          <div className={`absolute top-1/2 right-1 w-1.5 h-1.5 -mt-0.75 rounded-full transition-all duration-300 ${
-            isLightOn 
-              ? 'bg-green-400 shadow-lg shadow-green-400/50' 
-              : 'bg-slate-300 dark:bg-slate-600'
-          }`}></div>
         </div>
         
-        {/* Plate Screws */}
-        <div className="absolute top-1 left-1 w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full shadow-sm"></div>
-        <div className="absolute top-1 right-1 w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full shadow-sm"></div>
-        <div className="absolute bottom-1 left-1 w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full shadow-sm"></div>
-        <div className="absolute bottom-1 right-1 w-1.5 h-1.5 bg-slate-400 dark:bg-slate-500 rounded-full shadow-sm"></div>
+        {/* Switch Toggle Handle */}
+        <div 
+          className={`absolute top-1 w-6 h-6 bg-gradient-to-br from-background to-muted border-2 border-border rounded-full shadow-lg transition-all duration-300 ease-out group-hover:shadow-xl ${
+            isLightOn 
+              ? 'left-7 border-primary/30' 
+              : 'left-1 border-muted-foreground/30'
+          }`}
+        >
+          {/* Handle Surface Detail */}
+          <div className="absolute inset-0.5 bg-gradient-to-br from-background via-muted/50 to-muted rounded-full">
+            {/* Center Dot */}
+            <div className={`absolute top-1/2 left-1/2 w-1 h-1 -mt-0.5 -ml-0.5 rounded-full transition-all duration-300 ${
+              isLightOn 
+                ? 'bg-amber-400 shadow-sm shadow-amber-400/50' 
+                : 'bg-muted-foreground/60'
+            }`}></div>
+            
+            {/* Grip Lines */}
+            <div className="absolute top-1/2 left-1/2 -mt-2 -ml-1.5 w-3 h-4 flex flex-col justify-center space-y-0.5">
+              <div className="w-full h-[1px] bg-muted-foreground/20 rounded-full"></div>
+              <div className="w-full h-[1px] bg-muted-foreground/20 rounded-full"></div>
+              <div className="w-full h-[1px] bg-muted-foreground/20 rounded-full"></div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Power Indicator LED */}
+        <div className={`absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+          isLightOn 
+            ? 'bg-green-400 shadow-md shadow-green-400/60 animate-pulse' 
+            : 'bg-muted-foreground/30'
+        }`}></div>
       </div>
       
-      {/* Hover Effect Glow */}
-      <div className="absolute inset-0 bg-primary/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
+      {/* Accessibility Label */}
+      <span className="sr-only">
+        {isLightOn ? 'Switch to dark mode' : 'Switch to light mode'}
+      </span>
+      
+      {/* Subtle Hover Glow */}
+      <div className="absolute inset-0 bg-primary/5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-200 -m-1"></div>
     </button>
   )
 } 
