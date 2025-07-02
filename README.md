@@ -2,6 +2,8 @@
 
 A cerebral, Wired-style blog exploring theoretical quantum consciousness, mathematical formalisms, and monadic computation. Built for minds operating at the intersection of math, metaphysics, and code.
 
+![Image](https://github.com/user-attachments/assets/24437d21-19a7-4956-8b2c-5336a3e7b801)
+
 ## Features
 
 - **Modern Tech Stack**: Next.js 14, TypeScript, Tailwind CSS, shadcn/ui
