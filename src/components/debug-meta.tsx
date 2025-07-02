@@ -1,6 +1,8 @@
 'use client'
 
-export function DebugMeta({ post, siteUrl }: { post: any, siteUrl: string }) {
+import { BlogPost } from '@/lib/blog'
+
+export function DebugMeta({ post, siteUrl }: { post: BlogPost, siteUrl: string }) {
   if (process.env.NODE_ENV !== 'development') return null
   
   const thumbnailUrl = post.thumbnail ? `${siteUrl}/images/thumbnails/${post.thumbnail}` : `${siteUrl}/og-image.png`
