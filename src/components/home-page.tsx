@@ -361,36 +361,37 @@ export function HomePage({ posts, tags }: HomePageProps) {
               <div className="space-y-4">
                 {tags.slice(0, 8).map((tag, index) => {
                   const tagPosts = posts.filter(post => post.tags?.includes(tag))
+                  const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))
                   return (
-                    <div 
+                    <Link 
                       key={tag} 
-                      className="flex items-center justify-between py-2 border-b border-muted/30 last:border-b-0 cursor-pointer hover:bg-muted/20 -mx-2 px-2 rounded transition-colors"
-                      onClick={() => handleTagChange(tag)}
+                      href={`/tag/${tagSlug}`}
+                      className="flex items-center justify-between py-2 border-b border-muted/30 last:border-b-0 hover:bg-muted/20 -mx-2 px-2 rounded transition-colors group"
                     >
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 bg-gradient-to-br from-primary/20 to-primary/10 rounded flex items-center justify-center">
                           <span className="text-xs font-bold text-primary">{index + 1}</span>
                         </div>
                         <div>
-                          <div className="font-bold text-sm text-foreground">{tag}</div>
+                          <div className="font-bold text-sm text-foreground group-hover:text-primary transition-colors">{tag}</div>
                           <div className="text-xs text-muted-foreground">{tagPosts.length} articles</div>
                         </div>
                       </div>
-                      <Badge variant="outline" className="text-xs font-bold">
+                      <Badge variant="outline" className="text-xs font-bold group-hover:border-primary/30 transition-colors">
                         EXPLORE
                       </Badge>
-                    </div>
+                    </Link>
                   )
                 })}
               </div>
               
               <div className="mt-6 pt-4 border-t border-muted/30">
-                <button 
-                  onClick={() => handleTagChange(null)}
-                  className="w-full px-4 py-2 text-sm font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors"
+                <Link 
+                  href="/"
+                  className="block w-full px-4 py-2 text-sm font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors text-center"
                 >
-                  VIEW ALL TOPICS
-                </button>
+                  VIEW ALL ARTICLES
+                </Link>
               </div>
             </CardContent>
           </Card>

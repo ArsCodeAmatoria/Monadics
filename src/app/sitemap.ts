@@ -1,9 +1,10 @@
-import { getAllPosts, getAllCategories } from '@/lib/blog'
+import { getAllPosts, getAllCategories, getAllTags } from '@/lib/blog'
 
 export default function sitemap() {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://monadics.vercel.app'
   const posts = getAllPosts()
   const categories = getAllCategories()
+  const tags = getAllTags()
 
   // Static pages
   const staticPages = [
@@ -29,6 +30,17 @@ export default function sitemap() {
     priority: 0.8,
   }))
 
+  // Tag pages
+  const tagPages = tags.map((tag) => {
+    const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))
+    return {
+      url: `${siteUrl}/tag/${tagSlug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+    }
+  })
+
   // Dynamic blog post pages - prefer category URLs for categorized posts
   const postPages = posts.map((post) => {
     const url = post.categorySlug 
@@ -53,5 +65,5 @@ export default function sitemap() {
     },
   ]
 
-  return [...staticPages, ...categoryPages, ...postPages, ...feeds]
+  return [...staticPages, ...categoryPages, ...tagPages, ...postPages, ...feeds]
 } 

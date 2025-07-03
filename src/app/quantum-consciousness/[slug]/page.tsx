@@ -257,11 +257,16 @@ export default function CategoryPostPage({ params }: PageProps) {
 
           {post.tags && post.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
-              {post.tags.map((tag) => (
-                <Badge key={tag} variant="secondary" className="hover:bg-primary/10 font-bold">
-                  {tag.toUpperCase()}
-                </Badge>
-              ))}
+              {post.tags.map((tag) => {
+                const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))
+                return (
+                  <Link key={tag} href={`/tag/${tagSlug}`}>
+                    <Badge variant="secondary" className="hover:bg-primary/10 hover:text-primary transition-colors font-bold cursor-pointer">
+                      {tag.toUpperCase()}
+                    </Badge>
+                  </Link>
+                )
+              })}
             </div>
           )}
 
