@@ -387,7 +387,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
               
               <div className="mt-6 pt-4 border-t border-muted/30">
                 <Link 
-                  href="/"
+                  href="/articles"
                   className="block w-full px-4 py-2 text-sm font-bold text-primary border border-primary/20 rounded-lg hover:bg-primary/10 transition-colors text-center"
                 >
                   VIEW ALL ARTICLES
