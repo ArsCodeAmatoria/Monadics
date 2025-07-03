@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout'
 import { PostCard } from '@/components/post-card'
 import { Badge } from '@/components/ui/badge'
 import { generateBreadcrumbSchema } from '@/lib/seo'
-import { getPostsByTag, getAllTags, getAllPosts } from '@/lib/blog'
+import { getPostsByTag, getAllTags, getAllPosts, findOriginalTagCase } from '@/lib/blog'
 import type { Metadata } from 'next'
 
 interface TagPageProps {
@@ -12,14 +12,17 @@ interface TagPageProps {
 
 export function generateStaticParams() {
   const tags = getAllTags()
-  return tags.map((tag) => ({
-    slug: encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-')),
+  // Create unique lowercase versions to avoid duplicates
+  const uniqueTags = Array.from(new Set(tags.map(tag => tag.toLowerCase())))
+  return uniqueTags.map((tag) => ({
+    slug: encodeURIComponent(tag.replace(/\s+/g, '-')),
   }))
 }
 
 export function generateMetadata({ params }: TagPageProps): Metadata {
-  const tagName = decodeURIComponent(params.slug).replace(/-/g, ' ').toUpperCase()
-  const posts = getPostsByTag(tagName)
+  const searchTag = decodeURIComponent(params.slug).replace(/-/g, ' ')
+  const posts = getPostsByTag(searchTag)
+  const tagName = findOriginalTagCase(searchTag)
   
   if (posts.length === 0) {
     return {
@@ -69,8 +72,9 @@ export function generateMetadata({ params }: TagPageProps): Metadata {
 }
 
 export default function TagPage({ params }: TagPageProps) {
-  const tagName = decodeURIComponent(params.slug).replace(/-/g, ' ').toUpperCase()
-  const posts = getPostsByTag(tagName)
+  const searchTag = decodeURIComponent(params.slug).replace(/-/g, ' ')
+  const posts = getPostsByTag(searchTag)
+  const tagName = findOriginalTagCase(searchTag)
   
   if (posts.length === 0) {
     notFound()
@@ -102,7 +106,7 @@ export default function TagPage({ params }: TagPageProps) {
             </Badge>
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-black mb-6 font-sans text-primary uppercase">
+          <h1 className="text-4xl md:text-6xl font-black mb-6 font-sans text-primary">
             {tagName}
           </h1>
           

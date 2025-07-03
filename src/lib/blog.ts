@@ -162,7 +162,22 @@ export function getAllTags(): string[] {
 
 export function getPostsByTag(tag: string): BlogPost[] {
   const posts = getAllPosts()
-  return posts.filter(post => post.tags?.includes(tag))
+  return posts.filter(post => 
+    post.tags?.some(postTag => postTag.toLowerCase() === tag.toLowerCase())
+  )
+}
+
+export function findOriginalTagCase(tag: string): string {
+  const posts = getAllPosts()
+  for (const post of posts) {
+    if (post.tags) {
+      const originalTag = post.tags.find(postTag => postTag.toLowerCase() === tag.toLowerCase())
+      if (originalTag) {
+        return originalTag
+      }
+    }
+  }
+  return tag // fallback to input if not found
 }
 
 export function getAllCategories(): Category[] {
