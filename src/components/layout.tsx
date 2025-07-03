@@ -446,14 +446,18 @@ export function Layout({ children }: LayoutProps) {
                   "MATHEMATICS",
                   "COMPUTATION",
                   "PHILOSOPHY"
-                ].map(tag => (
-                  <span 
-                    key={tag}
-                    className="inline-flex items-center px-2 py-1 text-xs font-bold bg-muted text-muted-foreground hover:bg-primary/10 transition-colors cursor-pointer rounded border"
-                  >
-                    {tag}
-                  </span>
-                ))}
+                ].map(tag => {
+                  const tagSlug = encodeURIComponent(tag.toLowerCase().replace(/\s+/g, '-'))
+                  return (
+                    <Link 
+                      key={tag}
+                      href={`/tag/${tagSlug}`}
+                      className="inline-flex items-center px-2 py-1 text-xs font-bold bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary transition-colors rounded border"
+                    >
+                      {tag}
+                    </Link>
+                  )
+                })}
               </div>
               <div className="pt-4">
                 <Link 
