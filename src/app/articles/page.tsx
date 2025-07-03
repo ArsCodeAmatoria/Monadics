@@ -2,7 +2,6 @@ import { Layout } from '@/components/layout'
 import { PostCard } from '@/components/post-card'
 import { Badge } from '@/components/ui/badge'
 import { getAllPosts, getAllTags } from '@/lib/blog'
-import { useState } from 'react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 

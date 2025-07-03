@@ -3,7 +3,7 @@ import { Layout } from '@/components/layout'
 import { PostCard } from '@/components/post-card'
 import { Badge } from '@/components/ui/badge'
 import { generateBreadcrumbSchema } from '@/lib/seo'
-import { getPostsByTag, getAllTags, getAllPosts, findOriginalTagCase } from '@/lib/blog'
+import { getPostsByTag, getAllTags, findOriginalTagCase } from '@/lib/blog'
 import type { Metadata } from 'next'
 
 interface TagPageProps {
@@ -111,7 +111,7 @@ export default function TagPage({ params }: TagPageProps) {
           </h1>
           
           <p className="text-xl text-muted-foreground leading-relaxed max-w-3xl">
-            Explore all articles tagged with "{tagName}" - deep dives into quantum consciousness, 
+            Explore all articles tagged with &ldquo;{tagName}&rdquo; - deep dives into quantum consciousness, 
             mathematical computation, and theoretical explorations.
           </p>
           
