@@ -222,20 +222,30 @@ This treatise ends not with punctuation—but with **disappearance**.
 
 <ContentCard title="The Threshold">
 
-<div style={{position: 'relative', width: '100%', height: '16rem', marginBottom: '1.5rem', borderRadius: '0.5rem', overflow: 'hidden'}}>
-  <video
-    autoPlay
-    loop
-    muted
-    playsInline
-    style={{position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: 'cover'}}
-  >
-    <source src="/videos/10thdoor.mp4" type="video/mp4" />
-  </video>
-  <div style={{position: 'absolute', inset: '0', background: 'linear-gradient(to top, rgba(0,0,0,0.2), transparent)'}}></div>
+<div style={{display: 'flex', gap: '1.5rem', minHeight: '24rem', alignItems: 'stretch'}}>
+  <div style={{position: 'relative', flex: '1', borderRadius: '0.5rem', overflow: 'hidden'}}>
+    <video
+      autoPlay
+      loop
+      muted
+      playsInline
+      style={{position: 'absolute', inset: '0', width: '100%', height: '100%', objectFit: 'cover'}}
+    >
+      <source src="/videos/10thdoor.mp4" type="video/mp4" />
+    </video>
+    <div style={{position: 'absolute', inset: '0', background: 'linear-gradient(to right, transparent, rgba(0,0,0,0.1))'}}></div>
+  </div>
+  
+  <div style={{flex: '1', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '2rem 0'}}>
+    <div style={{fontSize: '1.125rem', lineHeight: '1.75', fontStyle: 'italic', textAlign: 'center'}}>
+      <p style={{marginBottom: '1rem'}}>
+        <em>In the space between these words, the Door stands open.</em>
+      </p>
+      <p>
+        <em>In the silence after reading, you are already home.</em>
+      </p>
+    </div>
+  </div>
 </div>
-
-*In the space between these words, the Door stands open.*  
-*In the silence after reading, you are already home.*
 
 </ContentCard> 
