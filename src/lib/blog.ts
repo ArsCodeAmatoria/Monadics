@@ -13,6 +13,7 @@ export interface BlogPost {
   content: string
   excerpt?: string
   thumbnail?: string
+  video?: string
   category?: string
   categorySlug?: string
 }

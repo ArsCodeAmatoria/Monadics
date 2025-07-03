@@ -268,19 +268,48 @@ export default function CategoryPostPage({ params }: PageProps) {
           <Separator className="mb-8" />
         </header>
 
-        {/* Featured Image */}
-        {post.thumbnail && (
+        {/* Featured Media */}
+        {(post.video || post.thumbnail) && (
           <div className="mb-12">
             <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
-              <Image
-                src={`/images/thumbnails/${post.thumbnail}`}
-                alt={post.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover"
-                style={{ objectPosition: '50% 25%' }}
-                priority
-              />
+              {post.video ? (
+                <>
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+                    style={{ objectPosition: '50% 25%' }}
+                  >
+                    <source src={`/videos/${post.video}`} type="video/mp4" />
+                    {/* Fallback to thumbnail if video fails */}
+                    {post.thumbnail && (
+                      <Image 
+                        src={`/images/thumbnails/${post.thumbnail}`}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover"
+                        style={{ objectPosition: '50% 25%' }}
+                        priority
+                      />
+                    )}
+                  </video>
+                  {/* Subtle gradient overlay for better text readability if needed */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-background/10 via-transparent to-transparent pointer-events-none"></div>
+                </>
+              ) : (
+                <Image
+                  src={`/images/thumbnails/${post.thumbnail}`}
+                  alt={post.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover"
+                  style={{ objectPosition: '50% 25%' }}
+                  priority
+                />
+              )}
             </div>
           </div>
         )}
