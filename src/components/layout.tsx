@@ -502,11 +502,11 @@ export function Layout({ children }: LayoutProps) {
                   </p>
                   <div className="space-y-2">
                     <a
-                      href="mailto:contact@monadics.dev"
+                      href="mailto:arscodeamatoria@gmail.com"
                       className="flex items-center text-xs font-bold text-muted-foreground hover:text-primary transition-colors"
                     >
                       <Mail className="mr-2 h-3 w-3" />
-                      CONTACT@MONADICS.DEV
+                      ARSCODEAMATORIA@GMAIL.COM
                     </a>
                     <Link
                       href="/about"
@@ -530,7 +530,7 @@ export function Layout({ children }: LayoutProps) {
               
               <div className="flex items-center space-x-6">
                 <a
-                  href="https://github.com"
+                  href="https://github.com/ArsCodeAmatoria/Monadics"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
@@ -540,14 +540,14 @@ export function Layout({ children }: LayoutProps) {
                   <span className="sr-only">GitHub</span>
                 </a>
                 <a
-                  href="https://twitter.com"
+                  href="https://x.com/ars_nine"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-primary transition-colors"
-                  title="Twitter"
+                  title="Twitter/X"
                 >
                   <Twitter className="h-4 w-4" />
-                  <span className="sr-only">Twitter</span>
+                  <span className="sr-only">Twitter/X</span>
                 </a>
                 <a
                   href="/rss.xml"
@@ -558,7 +558,7 @@ export function Layout({ children }: LayoutProps) {
                   <span className="sr-only">RSS Feed</span>
                 </a>
                 <a
-                  href="mailto:contact@monadics.dev"
+                  href="mailto:arscodeamatoria@gmail.com"
                   className="text-muted-foreground hover:text-primary transition-colors"
                   title="Email"
                 >
