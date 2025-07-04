@@ -10,40 +10,6 @@ import { Code, BookOpen, Zap, Terminal, Download, Play, FileCode, GitBranch, Set
 import Link from 'next/link'
 import { useState } from 'react'
 
-export const metadata = {
-  title: 'Documentation - Monadics Framework',
-  description: 'Complete documentation for the Monadics framework. Learn the Collapse monad, API reference, code examples, and theoretical foundations for quantum consciousness computation.',
-  keywords: [
-    'monadics documentation',
-    'collapse monad api',
-    'haskell quantum computing',
-    'consciousness computation',
-    'bayesian inference monad',
-    'quantum collapse programming',
-    'functional programming docs',
-    'monadic consciousness'
-  ],
-  openGraph: {
-    title: 'Monadics Framework Documentation',
-    description: 'Complete documentation for the Monadics framework. Learn the Collapse monad, API reference, code examples, and theoretical foundations.',
-    type: 'website',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Monadics Framework Documentation',
-      }
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Monadics Framework Documentation',
-    description: 'Complete documentation for the Monadics framework. Learn the Collapse monad, API reference, code examples, and theoretical foundations.',
-    images: ['/og-image.png'],
-  },
-}
-
 export default function DocsPage() {
   const [isCompilerOpen, setIsCompilerOpen] = useState(false)
 
