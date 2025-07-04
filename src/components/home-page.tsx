@@ -70,7 +70,7 @@ export function HomePage({ posts, tags }: HomePageProps) {
             </h1>
             <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed font-medium max-w-3xl mx-auto">
               A cerebral exploration of theoretical quantum consciousness, mathematical formalisms, 
-              and monadic computation. Where minds meet mathematics at the intersection of reality and code.
+              and monadic computation. Where minds meet mathematics at the intersection of reality and <span className="lighthouse-code">code</span>.
             </p>
           </div>
           
