@@ -6,7 +6,7 @@ author: "LUCI"
 tags: ["Quantum Computing", "Mathematics", "Collapse", "Quantum Consciousness", "Computation"]
 category: "quantum-consciousness"
 readingTime: "12 min read"
-thumbnail: "F799Q7tXUAAz3qW.jpeg"
+thumbnail: "F7K6k_cagAA7Ej9.jpeg"
 ---
 
 # Collapse-λ: A New Calculus of Quantum Collapse
@@ -17,7 +17,7 @@ Collapse-λ is a novel mathematical and computational framework that redefines c
 
 We begin by defining the **Collapse Integral**, which models the expected value of a function over a superposed quantum state, prior to collapse:
 
-$$\int_C f \, dP := \sum_{\omega \in \Omega} f(\omega) \cdot P(\omega)$$
+$$\displaystyle\int_C f \, d\mathbb{P} := \sum_{\omega \in \Omega} f(\omega) \cdot \mathbb{P}(\omega)$$
 
 This is the cornerstone of pre-collapse prediction, and is foundational for probabilistic reasoning in Collapse-λ.
 
@@ -29,7 +29,7 @@ $$\delta_C f(x) := f(\text{collapse}(x)) - f(x)$$
 
 This expresses informational deviation from a given state to its realized outcome. Averaged over the collapse space:
 
-$$E[\delta_C f] = \sum_{\omega \in \Omega} (f(\omega) - f(x)) \cdot P(\omega)$$
+$$E[\delta_C f] = \sum_{\omega \in \Omega} (f(\omega) - f(x)) \cdot \mathbb{P}(\omega)$$
 
 This has potential applications in collapse-sensitive optimization, signal propagation, and logic inference.
 
@@ -53,7 +53,7 @@ $$\psi_0 \xrightarrow{C_1} \psi_1 \xrightarrow{C_2} \psi_2 \cdots \xrightarrow{C
 
 Transition probabilities are determined by:
 
-$$P(\psi_{i+1} | \psi_i) = \|C_{i+1} \psi_i\|^2$$
+$$\mathbb{P}(\psi_{i+1} | \psi_i) = \|C_{i+1} \psi_i\|^2$$
 
 This structure mirrors Markov chains, but grounded in quantum event resolution, not classical state transitions.
 
@@ -74,7 +74,7 @@ This creates a monoidal, probabilistic category where:
 
 To measure the uncertainty prior to collapse, define **collapse entropy** as:
 
-$$S_C := -\sum_{\omega \in \Omega} P(\omega) \log P(\omega)$$
+$$S_C := -\sum_{\omega \in \Omega} \mathbb{P}(\omega) \log \mathbb{P}(\omega)$$
 
 Collapse-λ treats entropy not as thermodynamic waste, but as computational raw material—the informational potential of the system.
 
@@ -106,7 +106,7 @@ Here, $\Delta I$ represents informational divergence—collapse occurs when info
     </TableRow>
     <TableRow>
       <TableCell className="font-medium">Collapse Integral</TableCell>
-      <TableCell>$\int_C f \, dP = \sum f(\omega) P(\omega)$</TableCell>
+      <TableCell>$\displaystyle\int_C f \, d\mathbb{P} = \sum f(\omega) \mathbb{P}(\omega)$</TableCell>
     </TableRow>
     <TableRow>
       <TableCell className="font-medium">Collapse Algebra</TableCell>
@@ -122,7 +122,7 @@ Here, $\Delta I$ represents informational divergence—collapse occurs when info
     </TableRow>
     <TableRow>
       <TableCell className="font-medium">Collapse Entropy</TableCell>
-      <TableCell>$S = -\sum P(\omega) \log P(\omega)$</TableCell>
+      <TableCell>$S = -\sum \mathbb{P}(\omega) \log \mathbb{P}(\omega)$</TableCell>
     </TableRow>
     <TableRow>
       <TableCell className="font-medium">Collapse Time</TableCell>
