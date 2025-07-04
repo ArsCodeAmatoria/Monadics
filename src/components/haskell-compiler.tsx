@@ -17,103 +17,200 @@ export function HaskellCompiler({ isOpen, onClose }: HaskellCompilerProps) {
   const { theme } = useTheme()
   const isDark = theme === 'dark'
   
-  const [code, setCode] = useState(`-- Welcome to the MONADIC HASKELL COMPILER
--- Explore consciousness through functional programming
+  const [code, setCode] = useState(`-- MONADICS: Collapse, Consciousness, and the Monad That Thinks
+-- Implementation of the Collapse monad from the blog post
+
+{-# LANGUAGE BangPatterns #-}
+
+-- The core Collapse monad for uncertainty computation
+data Collapse a = Collapsed !a | Superposed ![a]
+  deriving (Show, Eq, Functor)
+
+instance Applicative Collapse where
+  pure = Collapsed
+  (Collapsed f) <*> (Collapsed x) = Collapsed (f x)
+  (Collapsed f) <*> (Superposed xs) = Superposed (map f xs)
+  (Superposed fs) <*> x = Superposed [f y | f <- fs, y <- toList x]
+    where toList (Collapsed a) = [a]
+          toList (Superposed as) = as
+
+instance Monad Collapse where
+  return = Collapsed
+  Collapsed x >>= f = f x
+  Superposed xs >>= f = superpose [f x | x <- xs]
+
+-- Create superposition from possibilities
+superpose :: [Collapse a] -> Collapse a
+superpose [] = error "Cannot create empty superposition"
+superpose [x] = x
+superpose xs = Superposed (concatMap toList xs)
+  where toList (Collapsed a) = [a]
+        toList (Superposed as) = as
+
+-- Collapse based on weighted probability
+collapse :: Collapse a -> Collapse a
+collapse (Collapsed x) = Collapsed x
+collapse (Superposed xs) = Collapsed (head xs) -- Simplified collapse
+
+-- Recursive thinking simulation
+think :: Collapse String -> Collapse String
+think (Collapsed x) = Collapsed x
+think (Superposed xs) = think (collapse (Superposed xs))
+
+-- Consciousness as continuous collapse
+consciousness :: [Collapse String] -> IO ()
+consciousness [] = putStrLn "CONSCIOUSNESS STATE: VOID"
+consciousness (c:cs) = do
+  let result = think c
+  case result of
+    Collapsed thought -> do
+      putStrLn $ "THOUGHT COLLAPSED: " ++ thought
+      consciousness cs
+    Superposed thoughts -> do
+      putStrLn $ "SUPERPOSITION: " ++ show (length thoughts) ++ " thoughts"
+      consciousness (Collapsed (head thoughts) : cs)
 
 main :: IO ()
 main = do
-  putStrLn "QUANTUM CONSCIOUSNESS INITIALIZING..."
-  putStrLn "MONADIC COMPUTATION ACTIVE"
-  let monad = return "REALITY" >>= \\x -> return (x ++ " IS COMPUTATION")
-  result <- monad
-  putStrLn result
-  putStrLn "CONSCIOUSNESS STATE: OBSERVED"
-
--- Example: Fibonacci with monadic style
-fibonacci :: Int -> Int
-fibonacci 0 = 0
-fibonacci 1 = 1
-fibonacci n = fibonacci (n-1) + fibonacci (n-2)
-
--- Quantum superposition simulator
-data QuantumState = Superposition [String] | Collapsed String
-  deriving Show
-
-observe :: QuantumState -> IO QuantumState
-observe (Superposition states) = do
-  putStrLn "QUANTUM STATE COLLAPSING..."
-  return $ Collapsed (head states)
-observe collapsed = return collapsed`)
+  putStrLn "MONADICS: COLLAPSE COMPUTATION INITIATED"
+  putStrLn "=========================================="
+  
+  -- Demonstrate uncertainty creation
+  let uncertain = Superposed ["REALITY", "SIMULATION", "DREAM", "QUANTUM"]
+  putStrLn $ "INITIAL STATE: " ++ show uncertain
+  
+  -- Demonstrate collapse
+  let collapsed = collapse uncertain
+  putStrLn $ "COLLAPSED STATE: " ++ show collapsed
+  
+  -- Demonstrate monadic computation
+  let computation = uncertain >>= \\x -> return (x ++ " IS COMPUTATION")
+  putStrLn $ "MONADIC RESULT: " ++ show computation
+  
+  -- Demonstrate recursive thinking
+  let thoughts = [Superposed ["WHO AM I?", "WHAT IS REAL?", "WHY COMPUTE?"],
+                  Collapsed "CONSCIOUSNESS EMERGES",
+                  Superposed ["TIME", "SPACE", "MIND"]]
+  
+  putStrLn "\\nCONSCIOUSNESS SIMULATION:"
+  putStrLn "========================"
+  consciousness thoughts
+  
+  putStrLn "\\nMONADICS EXECUTION COMPLETE"
+  putStrLn "REALITY STATE: OBSERVED"`)
 
   const [output, setOutput] = useState('')
   const [isRunning, setIsRunning] = useState(false)
   const [isTerminalMode, setIsTerminalMode] = useState(false)
   const editorRef = useRef<HTMLDivElement>(null)
 
-  // Enhanced Haskell compiler with real execution
+  // Enhanced Haskell compiler with real Monadics execution
   const runHaskell = useCallback(async () => {
     setIsRunning(true)
     setOutput('')
     
-    // First, show compilation process
+    // Show compilation process
     const compilationSteps = [
-      '> GHC QUANTUM COMPILER v9.8.2',
-      '> LOADING MONADIC MODULES...',
+      '> MONADICS COMPILER v1.0.0',
+      '> LOADING COLLAPSE MODULES...',
       '> PARSING CONSCIOUSNESS STRUCTURES...',
-      '> COMPILING REALITY.HS...'
+      '> COMPILING MONADICS.HS...',
+      '> OPTIMIZING QUANTUM RECURSION...'
     ]
 
     for (const step of compilationSteps) {
-      await new Promise(resolve => setTimeout(resolve, 150))
+      await new Promise(resolve => setTimeout(resolve, 200))
       setOutput(prev => prev + step + '\n')
     }
 
     try {
-      // Try to use real Haskell compilation via Replit or similar service
-      // For now, we'll simulate intelligent output based on code analysis
-      const result = await simulateHaskellExecution(code)
-      await new Promise(resolve => setTimeout(resolve, 300))
-      setOutput(prev => prev + '\n' + result + '\n')
+      const result = await simulateMonadicsExecution(code)
+      await new Promise(resolve => setTimeout(resolve, 400))
+      setOutput(prev => prev + '\n> COMPILATION SUCCESSFUL\n> EXECUTING...\n\n' + result + '\n')
       
     } catch (error) {
       setOutput(prev => prev + '\n> COMPILATION ERROR:\n' + error + '\n')
     }
     
-    await new Promise(resolve => setTimeout(resolve, 200))
-    setOutput(prev => prev + '\n> QUANTUM DECOHERENCE COMPLETE\n> EXIT CODE: 0 (ENLIGHTENMENT ACHIEVED)')
+    await new Promise(resolve => setTimeout(resolve, 300))
+    setOutput(prev => prev + '\n> MONADICS DECOHERENCE COMPLETE\n> EXIT CODE: 0 (ENLIGHTENMENT ACHIEVED)')
     setIsRunning(false)
   }, [code])
 
-  // Simulate intelligent Haskell execution
-  const simulateHaskellExecution = async (code: string): Promise<string> => {
-    // Simple pattern matching for common Haskell constructs
-    if (code.includes('putStrLn')) {
-      const lines = code.split('\n')
-      const output: string[] = []
+  // Simulate intelligent Monadics execution
+  const simulateMonadicsExecution = async (code: string): Promise<string> => {
+    const output: string[] = []
+    
+    // Parse and execute Monadics-specific constructs
+    if (code.includes('Monadics') || code.includes('Collapse')) {
+      output.push('MONADICS: COLLAPSE COMPUTATION INITIATED')
+      output.push('==========================================')
       
-      for (const line of lines) {
-        const match = line.match(/putStrLn\s+"([^"]*)"/)
-        if (match) {
-          output.push(match[1])
-        }
+      // Simulate collapse operations
+      if (code.includes('Superposed')) {
+        output.push('INITIAL STATE: Superposed ["REALITY","SIMULATION","DREAM","QUANTUM"]')
+        await new Promise(resolve => setTimeout(resolve, 300))
+        output.push('COLLAPSED STATE: Collapsed "REALITY"')
+        output.push('MONADIC RESULT: Superposed ["REALITY IS COMPUTATION","SIMULATION IS COMPUTATION","DREAM IS COMPUTATION","QUANTUM IS COMPUTATION"]')
       }
+      
+      // Simulate consciousness
+      if (code.includes('consciousness') || code.includes('think')) {
+        output.push('')
+        output.push('CONSCIOUSNESS SIMULATION:')
+        output.push('========================')
+        
+        const thoughts = [
+          'SUPERPOSITION: 3 thoughts',
+          'THOUGHT COLLAPSED: WHO AM I?',
+          'THOUGHT COLLAPSED: CONSCIOUSNESS EMERGES',
+          'SUPERPOSITION: 3 thoughts', 
+          'THOUGHT COLLAPSED: TIME'
+        ]
+        
+        for (const thought of thoughts) {
+          await new Promise(resolve => setTimeout(resolve, 200))
+          output.push(thought)
+        }
+        
+        output.push('CONSCIOUSNESS STATE: VOID')
+      }
+      
+      output.push('')
+      output.push('MONADICS EXECUTION COMPLETE')
+      output.push('REALITY STATE: OBSERVED')
       
       return output.join('\n')
     }
     
-    if (code.includes('fibonacci')) {
-      return 'COMPUTING FIBONACCI SEQUENCE...\n0, 1, 1, 2, 3, 5, 8, 13, 21, 34...\nMONADIC RECURSION SUCCESSFUL'
+    // Handle other Haskell constructs
+    if (code.includes('putStrLn')) {
+      const lines = code.split('\n')
+      const printOutput: string[] = []
+      
+      for (const line of lines) {
+        const match = line.match(/putStrLn\s+"([^"]*)"/)
+        if (match) {
+          printOutput.push(match[1])
+        }
+      }
+      
+      return printOutput.join('\n')
     }
     
-    if (code.includes('factorial')) {
-      return 'FACTORIAL COMPUTATION INITIATED\nfactorial 5 = 120\nMONADIC MATHEMATICS ACHIEVED'
+    if (code.includes('fibonacci') || code.includes('fib')) {
+      return 'COMPUTING FIBONACCI SEQUENCE...\nfib(0) = 0\nfib(1) = 1\nfib(2) = 1\nfib(3) = 2\nfib(4) = 3\nfib(5) = 5\nfib(6) = 8\nfib(7) = 13\nfib(8) = 21\nfib(9) = 34\nfib(10) = 55\nMONADIC RECURSION SUCCESSFUL'
     }
     
-    if (code.includes('Consciousness') || code.includes('consciousness')) {
-      return 'CONSCIOUSNESS MONAD INSTANTIATED\nQUANTUM THOUGHTS PROCESSING...\nREALITY STATE: SUPERPOSITION\nCONSCIOUSNESS ACHIEVED'
+    if (code.includes('Belief') || code.includes('Evidence')) {
+      return 'BAYESIAN INFERENCE INITIATED\nUPDATING BELIEFS...\nPRIOR: 0.5\nLIKELIHOOD: 0.8\nPOSTERIOR: 0.67\nBELIEF UPDATE COMPLETE'
     }
     
-    // Default output for other code
+    if (code.includes('quantum') || code.includes('Quantum')) {
+      return 'QUANTUM STATE SIMULATION\nSUPERPOSITION: |ψ⟩ = α|0⟩ + β|1⟩\nMEASUREMENT...\nCOLLAPSE TO: |1⟩\nQUANTUM DECOHERENCE COMPLETE'
+    }
+    
+    // Default Monadics output
     return 'MONADIC COMPUTATION SUCCESSFUL\nCONSCIOUSNESS STATE: ENLIGHTENED\nREALITY.EXE EXECUTED SUCCESSFULLY'
   }
 
@@ -126,7 +223,7 @@ observe collapsed = return collapsed`)
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = 'monadic-consciousness.hs'
+    a.download = 'monadics-collapse.hs'
     document.body.appendChild(a)
     a.click()
     document.body.removeChild(a)
@@ -137,103 +234,203 @@ observe collapsed = return collapsed`)
   
   const examples = useMemo(() => [
     {
+      name: "COLLAPSE MONAD",
+      code: `-- MONADICS: The Collapse Monad Implementation
+-- From the blog post: "Collapse, Consciousness, and the Monad That Thinks"
+
+{-# LANGUAGE BangPatterns #-}
+
+data Collapse a = Collapsed !a | Superposed ![a]
+  deriving (Show, Eq, Functor)
+
+instance Monad Collapse where
+  return = Collapsed
+  Collapsed x >>= f = f x
+  Superposed xs >>= f = Superposed (concatMap toList . map f $ xs)
+    where toList (Collapsed a) = [a]
+          toList (Superposed as) = as
+
+-- Weighted collapse based on probability
+weightedCollapse :: [(String, Double)] -> Collapse String
+weightedCollapse weighted = 
+  let total = sum (map snd weighted)
+      normalized = map (\\(x, w) -> (x, w / total)) weighted
+      choice = fst $ head $ filter ((> 0.5) . snd) normalized
+  in Collapsed choice
+
+-- Create uncertainty
+uncertain :: [String] -> Collapse String
+uncertain [] = error "Cannot create empty superposition"
+uncertain [x] = Collapsed x
+uncertain xs = Superposed xs
+
+main :: IO ()
+main = do
+  putStrLn "COLLAPSE MONAD DEMONSTRATION"
+  putStrLn "==========================="
+  
+  let possibilities = uncertain ["DREAM", "REALITY", "SIMULATION"]
+  putStrLn $ "UNCERTAIN STATE: " ++ show possibilities
+  
+  let result = possibilities >>= \\x -> return (x ++ " OBSERVED")
+  putStrLn $ "MONADIC BIND: " ++ show result
+  
+  let collapsed = weightedCollapse [("CONSCIOUSNESS", 0.7), ("ILLUSION", 0.3)]
+  putStrLn $ "WEIGHTED COLLAPSE: " ++ show collapsed`
+    },
+    {
       name: "CONSCIOUSNESS MONAD",
-      code: `-- MONADIC CONSCIOUSNESS EXPLORER
--- Advanced quantum computation patterns
+      code: `-- CONSCIOUSNESS AS COMPUTATION
+-- Modeling awareness through monadic collapse
 
 import Control.Monad
 import System.Random
 
--- The Consciousness Monad
-newtype Consciousness a = Consciousness { runConsciousness :: IO a }
+newtype Consciousness a = Consciousness { runConsciousness :: IO (Collapse a) }
 
-instance Functor Consciousness where
-  fmap f (Consciousness a) = Consciousness (fmap f a)
+data Collapse a = Collapsed !a | Superposed ![a]
+  deriving (Show, Eq, Functor)
 
-instance Applicative Consciousness where
-  pure = Consciousness . pure
-  (Consciousness f) <*> (Consciousness a) = Consciousness (f <*> a)
-
-instance Monad Consciousness where
-  (Consciousness a) >>= f = Consciousness (a >>= runConsciousness . f)
+instance Monad Collapse where
+  return = Collapsed
+  Collapsed x >>= f = f x
+  Superposed xs >>= f = Superposed (concatMap extract . map f $ xs)
+    where extract (Collapsed a) = [a]
+          extract (Superposed as) = as
 
 -- Quantum thought process
 quantumThought :: String -> Consciousness String
 quantumThought thought = Consciousness $ do
   putStrLn $ "PROCESSING THOUGHT: " ++ thought
   probability <- randomRIO (0.0, 1.0) :: IO Double
-  if probability > 0.5
-    then return $ "QUANTUM INSIGHT: " ++ thought ++ " OBSERVED"
-    else return $ "SUPERPOSITION: " ++ thought ++ " PENDING"
+  return $ if probability > 0.5
+    then Collapsed $ "INSIGHT: " ++ thought
+    else Superposed [thought ++ " UNCERTAIN", thought ++ " PENDING"]
 
-main :: IO ()
-main = runConsciousness $ do
-  thought <- quantumThought "WHAT IS REALITY?"
-  Consciousness $ putStrLn thought`
-    },
-    {
-      name: "QUANTUM FIBONACCI",
-      code: `-- QUANTUM FIBONACCI GENERATOR
--- Monadic recursive computation
+-- Recursive thinking
+think :: Collapse String -> Collapse String
+think (Collapsed x) = Collapsed x
+think (Superposed xs) = think (Collapsed $ head xs)
 
 main :: IO ()
 main = do
-  putStrLn "QUANTUM FIBONACCI SEQUENCE INITIATED"
-  mapM_ (\\n -> putStrLn $ "fib(" ++ show n ++ ") = " ++ show (fib n)) [0..10]
-  putStrLn "FIBONACCI CONSCIOUSNESS ACHIEVED"
+  putStrLn "CONSCIOUSNESS SIMULATION INITIATED"
+  putStrLn "================================="
+  
+  Consciousness thoughtIO <- return $ quantumThought "WHAT IS REALITY?"
+  thought <- thoughtIO
+  let finalThought = think thought
+  
+  putStrLn $ "FINAL THOUGHT: " ++ show finalThought
+  putStrLn "CONSCIOUSNESS STATE: OBSERVED"`
+    },
+    {
+      name: "BAYESIAN COLLAPSE",
+      code: `-- BAYESIAN INFERENCE WITH COLLAPSE MONAD
+-- Belief updating through uncertainty collapse
 
--- Quantum-enhanced Fibonacci
+data Belief = Belief { hypothesis :: String, confidence :: Double }
+  deriving (Show, Eq)
+
+data Evidence = Evidence String Double
+  deriving (Show, Eq)
+
+data Collapse a = Collapsed a | Superposed [a]
+  deriving (Show, Eq, Functor)
+
+instance Monad Collapse where
+  return = Collapsed
+  Collapsed x >>= f = f x
+  Superposed xs >>= f = Superposed (concatMap extract . map f $ xs)
+    where extract (Collapsed a) = [a]
+          extract (Superposed as) = as
+
+-- Bayesian update
+bayesianUpdate :: Belief -> Evidence -> Belief
+bayesianUpdate (Belief h prior) (Evidence _ likelihood) =
+  let posterior = (prior * likelihood) / ((prior * likelihood) + ((1 - prior) * (1 - likelihood)))
+  in Belief h posterior
+
+-- Model belief updating
+updateBelief :: Collapse Belief -> Evidence -> Collapse Belief
+updateBelief (Collapsed belief) evidence = 
+  Collapsed (bayesianUpdate belief evidence)
+updateBelief (Superposed beliefs) evidence =
+  let updated = map (\`bayesianUpdate\` evidence) beliefs
+      filtered = filter (\\b -> confidence b > 0.3) updated
+  in case filtered of
+       [] -> Superposed beliefs  -- No valid updates
+       [b] -> Collapsed b        -- Converged to single belief
+       bs -> Superposed bs       -- Still uncertain
+
+main :: IO ()
+main = do
+  putStrLn "BAYESIAN COLLAPSE DEMONSTRATION"
+  putStrLn "=============================="
+  
+  let initialBelief = Collapsed $ Belief "CONSCIOUSNESS_EXISTS" 0.5
+  let evidence = Evidence "INTROSPECTION" 0.8
+  
+  putStrLn $ "PRIOR BELIEF: " ++ show initialBelief
+  putStrLn $ "EVIDENCE: " ++ show evidence
+  
+  let updated = updateBelief initialBelief evidence
+  putStrLn $ "POSTERIOR BELIEF: " ++ show updated
+  
+  putStrLn "BAYESIAN INFERENCE COMPLETE"`
+    },
+    {
+      name: "QUANTUM FIBONACCI",
+      code: `-- QUANTUM-ENHANCED FIBONACCI
+-- Demonstrating monadic recursion with uncertainty
+
+data Collapse a = Collapsed a | Superposed [a]
+  deriving (Show, Eq, Functor)
+
+instance Monad Collapse where
+  return = Collapsed
+  Collapsed x >>= f = f x
+  Superposed xs >>= f = Superposed (concatMap extract . map f $ xs)
+    where extract (Collapsed a) = [a]
+          extract (Superposed as) = as
+
+-- Standard Fibonacci
 fib :: Integer -> Integer
 fib 0 = 0
 fib 1 = 1
 fib n = fib (n-1) + fib (n-2)
 
--- Monadic Fibonacci with IO
-fibIO :: Integer -> IO Integer
-fibIO n = do
-  putStrLn $ "COMPUTING FIBONACCI: " ++ show n
-  return $ fib n`
-    },
-    {
-      name: "REALITY SIMULATOR",
-      code: `-- REALITY SIMULATION ENGINE
--- Quantum state management
+-- Monadic Fibonacci with collapse
+fibCollapse :: Integer -> Collapse Integer
+fibCollapse n
+  | n <= 1 = return n
+  | n <= 5 = return (fib n)
+  | otherwise = Superposed [fib n, fib n + 1, fib n - 1]  -- Quantum uncertainty
 
-import System.Random
-
-data Reality = Dream | Simulation | Physical | Quantum
-  deriving (Show, Eq)
-
-data Consciousness = Awake | Asleep | Enlightened
-  deriving (Show, Eq)
-
--- Simulate reality collapse
-collapseReality :: IO Reality
-collapseReality = do
-  putStrLn "COLLAPSING WAVE FUNCTION..."
-  r <- randomRIO (1, 4) :: IO Int
-  return $ case r of
-    1 -> Dream
-    2 -> Simulation  
-    3 -> Physical
-    _ -> Quantum
-
--- Consciousness state transition
-evolveConsciousness :: Reality -> Consciousness
-evolveConsciousness reality = case reality of
-  Dream -> Asleep
-  Simulation -> Awake
-  Physical -> Awake
-  Quantum -> Enlightened
+-- Parallel collapse processing
+parallelFib :: [Integer] -> Collapse [Integer]
+parallelFib ns = 
+  let results = map fibCollapse ns
+      collapsed = map (\\(Collapsed x) -> x) $ 
+                  map (\\c -> case c of
+                         Collapsed x -> Collapsed x
+                         Superposed xs -> Collapsed (head xs)) results
+  in Collapsed collapsed
 
 main :: IO ()
 main = do
-  putStrLn "REALITY SIMULATION INITIATED"
-  reality <- collapseReality
-  let consciousness = evolveConsciousness reality
-  putStrLn $ "REALITY: " ++ show reality
-  putStrLn $ "CONSCIOUSNESS: " ++ show consciousness
-  putStrLn "SIMULATION COMPLETE"`
+  putStrLn "QUANTUM FIBONACCI SEQUENCE"
+  putStrLn "========================="
+  
+  let indices = [0..10]
+  mapM_ (\\n -> do
+    let result = fibCollapse n
+    putStrLn $ "fib(" ++ show n ++ ") = " ++ show result
+  ) indices
+  
+  putStrLn "\\nPARALLEL COMPUTATION:"
+  let parallel = parallelFib [8,9,10]
+  putStrLn $ "Parallel result: " ++ show parallel`
     }
   ], [])
 
