@@ -95,24 +95,36 @@
     backdrop-filter: saturate(150%);
   }
   
-  /* Lighthouse glow animation for the word "code" */
-  @keyframes lighthouse-glow {
-    0% { 
-      text-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), 0 0 15px hsl(var(--primary));
-      opacity: 0.8;
-    }
-    50% { 
-      text-shadow: 0 0 10px hsl(var(--primary)), 0 0 20px hsl(var(--primary)), 0 0 30px hsl(var(--primary)), 0 0 40px hsl(var(--primary));
-      opacity: 1;
-    }
-    100% { 
-      text-shadow: 0 0 5px hsl(var(--primary)), 0 0 10px hsl(var(--primary)), 0 0 15px hsl(var(--primary));
-      opacity: 0.8;
-    }
+  /* Flickering light animation for the word "code" */
+  @keyframes flicker-light {
+    0% { opacity: 1; }
+    2% { opacity: 0.3; }
+    4% { opacity: 1; }
+    8% { opacity: 0.4; }
+    10% { opacity: 1; }
+    15% { opacity: 0.2; }
+    18% { opacity: 1; }
+    22% { opacity: 0.5; }
+    25% { opacity: 1; }
+    30% { opacity: 0.1; }
+    35% { opacity: 1; }
+    40% { opacity: 0.4; }
+    45% { opacity: 1; }
+    50% { opacity: 0.3; }
+    55% { opacity: 1; }
+    60% { opacity: 0.2; }
+    65% { opacity: 1; }
+    70% { opacity: 0.6; }
+    75% { opacity: 1; }
+    80% { opacity: 0.1; }
+    85% { opacity: 1; }
+    90% { opacity: 0.4; }
+    95% { opacity: 1; }
+    100% { opacity: 1; }
   }
   
   .lighthouse-code {
-    animation: lighthouse-glow 2s ease-in-out infinite;
+    animation: flicker-light 3s linear infinite;
     color: hsl(var(--primary));
     font-weight: bold;
   }
