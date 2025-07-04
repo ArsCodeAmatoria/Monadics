@@ -535,10 +535,10 @@ main = do
         </CardHeader>
 
         <CardContent className="p-0 flex-1 overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 h-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 h-full min-h-0">
             {/* Code Editor */}
-            <div className="border-r border-border/40 bg-muted/5">
-              <div className="border-b border-border/40 px-4 py-2 bg-muted/10">
+            <div className="border-r border-border/40 bg-muted/5 flex flex-col min-h-0">
+              <div className="border-b border-border/40 px-4 py-2 bg-muted/10 flex-none">
                 <div className="flex items-center justify-between">
                   <h3 className="text-sm font-bold text-primary uppercase">
                     CONSCIOUSNESS.HS
@@ -570,7 +570,7 @@ main = do
                 </div>
               </div>
               
-              <div ref={editorRef} className="p-4 flex-1 overflow-hidden relative">
+              <div ref={editorRef} className="p-4 flex-1 overflow-auto relative" style={{ maxHeight: 'calc(90vh - 200px)' }}>
                 <CodeEditor
                   value={code}
                   language="haskell"
@@ -581,7 +581,8 @@ main = do
                     fontSize: 14,
                     backgroundColor: 'transparent',
                     fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                    height: '100%',
+                    minHeight: '400px',
+                    height: 'auto',
                     overflow: 'auto',
                     lineHeight: '1.6'
                   }}
@@ -591,7 +592,7 @@ main = do
             </div>
 
             {/* Terminal Output */}
-            <div className={`relative flex flex-col ${
+            <div className={`relative flex flex-col min-h-0 ${
               isDark 
                 ? 'bg-gradient-to-b from-gray-900 to-black text-green-400' 
                 : 'bg-background border-l border-border/40'
@@ -637,9 +638,9 @@ main = do
               
               <div className={`p-4 flex-1 overflow-auto relative ${
                 isDark ? '' : 'bg-muted/5'
-              }`}>
+              }`} style={{ maxHeight: 'calc(90vh - 200px)', minHeight: '400px' }}>
                 {/* Matrix rain effect backdrop */}
-                <div className="absolute inset-0 opacity-5 pointer-events-none">
+                <div className="absolute inset-0 opacity-5 pointer-events-none overflow-hidden">
                   <div className={`text-xs font-mono animate-pulse ${
                     isDark ? 'text-green-400' : 'text-muted-foreground'
                   }`}>
@@ -647,9 +648,9 @@ main = do
                   </div>
                 </div>
                 
-                <pre className={`font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10 ${
+                <pre className={`font-mono text-sm leading-relaxed whitespace-pre-wrap relative z-10 overflow-auto break-words ${
                   isDark ? '' : 'text-foreground'
-                }`}>
+                }`} style={{ maxWidth: '100%', wordWrap: 'break-word', overflowWrap: 'break-word' }}>
                   <span className={isDark ? 'text-green-300' : 'text-primary'}>╭─ MONADIC CONSCIOUSNESS COMPILER ─╮</span>
                   {'\n'}
                   <span className={isDark ? 'text-green-300' : 'text-primary'}>│</span> <span className={isDark ? 'text-cyan-400' : 'text-primary font-bold'}>GHC Quantum v9.8.2</span> <span className={isDark ? 'text-green-300' : 'text-primary'}>│</span>
