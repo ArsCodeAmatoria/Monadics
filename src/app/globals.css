@@ -72,6 +72,29 @@
     @apply bg-background text-foreground font-serif;
   }
   
+  /* Chrome-specific optimizations for backdrop-filter */
+  header {
+    will-change: transform;
+    -webkit-backdrop-filter: blur(20px) saturate(150%);
+    backdrop-filter: blur(20px) saturate(150%);
+  }
+  
+  /* Ensure smooth scrolling and transforms */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Optimize for Chrome's rendering engine */
+  .backdrop-blur-xl {
+    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px);
+  }
+  
+  .backdrop-saturate-150 {
+    -webkit-backdrop-filter: saturate(150%);
+    backdrop-filter: saturate(150%);
+  }
+  
   /* Typography */
   h1, h2, h3, h4, h5, h6 {
     @apply font-sans font-bold;
