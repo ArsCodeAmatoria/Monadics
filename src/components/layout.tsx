@@ -160,6 +160,19 @@ export function Layout({ children }: LayoutProps) {
                   </div>
 
                   <Link 
+                    href="/docs"
+                    className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  >
+                    <div className="flex flex-col items-center text-center space-y-3">
+                      <BookOpen className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                      <div>
+                        <h3 className="font-bold text-sm text-foreground uppercase">Documentation</h3>
+                        <p className="text-xs text-muted-foreground mt-1">API & framework guide</p>
+                      </div>
+                    </div>
+                  </Link>
+
+                  <Link 
                     href="/about"
                     className="group p-4 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
                   >
@@ -197,6 +210,13 @@ export function Layout({ children }: LayoutProps) {
                 </div>
               </DropdownMenuContent>
             </DropdownMenu>
+            
+            <Link 
+              href="/docs" 
+              className="text-base font-bold hover:text-primary transition-colors"
+            >
+              DOCS
+            </Link>
             
             <Link 
               href="/about" 
@@ -301,6 +321,15 @@ export function Layout({ children }: LayoutProps) {
                 >
                   <ArrowRight className="h-5 w-5 text-primary mr-2" />
                   <span className="font-bold text-sm text-foreground uppercase">All Articles</span>
+                </Link>
+
+                <Link 
+                  href="/docs"
+                  className="flex items-center p-3 rounded-lg border border-muted hover:border-primary/30 hover:bg-muted/50 transition-all"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <BookOpen className="h-5 w-5 text-primary mr-2" />
+                  <span className="font-bold text-sm text-foreground uppercase">Docs</span>
                 </Link>
 
                 <Link 
