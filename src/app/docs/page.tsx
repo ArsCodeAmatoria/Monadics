@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Button } from '@/components/ui/button'
 import { HaskellCompiler } from '@/components/haskell-compiler'
-import { Code, BookOpen, Zap, Terminal, Download, Play, FileCode, GitBranch, Settings } from 'lucide-react'
+import { Code, BookOpen, Zap, Terminal, Play, FileCode, Settings } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 
