@@ -1,7 +1,7 @@
 ---
 title: "Bayesian Collapse in Quantum Monadics"
 author: "LUCI"
-date: "2025-07-09"
+date: "2025-07-10"
 thumbnail: "headerredeye.jpeg"
 tags: ["Quantum Consciousness", "Bayesian Inference", "Monadics", "Quantum Computing", "Qiskit", "Collapse", "Haskell", "Python"]
 description: "Extending quantum computation with Bayesian collapse—where inference, not randomness, governs the evolution and selection of quantum states in the Monadics paradigm."
@@ -37,7 +37,19 @@ This traditional collapse is irreversible and is usually deferred to the end of 
 
 ### Quantum State Evolution
 
-The quantum state evolution from initialization through superposition to measurement collapse:
+<create_diagram>
+graph TD
+    A["|0⟩ Initial State"] --> B["H Gate<br/>Hadamard"]
+    B --> C["|ψ⟩ = α|0⟩ + β|1⟩<br/>Superposition"]
+    C --> D["Measurement<br/>Collapse"]
+    D --> E["|0⟩ or |1⟩<br/>Classical Result"]
+    
+    style A fill:#e1f5fe
+    style C fill:#fff3e0
+    style E fill:#f3e5f5
+    style B fill:#e8f5e8
+    style D fill:#fce4ec
+</create_diagram>
 
 ---
 
@@ -61,7 +73,23 @@ This introduces a primitive form of feedback. However, it is still rooted in ran
 
 ### Mid-Circuit Measurement Flow
 
-The conditional logic flow in mid-circuit measurement demonstrates how classical decisions control quantum operations:
+<create_diagram>
+graph TD
+    A["|00⟩"] --> B["H(0)"]
+    B --> C["|ψ⟩ = 1/√2(|00⟩ + |10⟩)"]
+    C --> D["Measure Q0"]
+    D --> E{"|0⟩ or |1⟩?"}
+    E -->|"|0⟩"| F["State: |00⟩<br/>No X gate"]
+    E -->|"|1⟩"| G["State: |10⟩<br/>Apply X(1)"]
+    F --> H["|00⟩ Final"]
+    G --> I["|11⟩ Final"]
+    
+    style A fill:#e1f5fe
+    style C fill:#fff3e0
+    style E fill:#ffebee
+    style H fill:#f3e5f5
+    style I fill:#f3e5f5
+</create_diagram>
 
 ---
 
@@ -86,7 +114,26 @@ We then sample from the posterior, not the raw quantum amplitudes.
 
 ### Bayesian Collapse Process
 
-The Bayesian collapse process transforms quantum amplitudes into informed decisions through prior knowledge integration:
+<create_diagram>
+graph TD
+    A["Quantum State<br/>|ψ⟩ = α|0⟩ + β|1⟩"] --> B["Extract Amplitudes<br/>|α|², |β|²"]
+    B --> C["Apply Prior<br/>P(0), P(1)"]
+    C --> D["Compute Posterior<br/>P(0|D), P(1|D)"]
+    D --> E["Sample from<br/>Posterior"]
+    E --> F["Collapsed State<br/>|0⟩ or |1⟩"]
+    
+    G["Prior Knowledge<br/>P(ω)"] --> C
+    H["Likelihood<br/>P(D|ω)"] --> D
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#e8f5e8
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#f3e5f5
+    style G fill:#e8f5e8
+    style H fill:#fff3e0
+</create_diagram>
 
 ---
 
@@ -151,7 +198,28 @@ This `collapseBayesian` function behaves as a Bayesian monadic bind, weighting f
 
 ### Monadic Collapse Chain
 
-The monadic structure enables compositional Bayesian collapse through typed functional programming:
+<create_diagram>
+graph TD
+    A["QState a<br/>Superposed"] --> B["collapseBayesian"]
+    B --> C["Apply Prior<br/>P(a)"]
+    C --> D["Compute Posterior<br/>P(a|D)"]
+    D --> E["Sample a"]
+    E --> F["f(a)"]
+    F --> G["QState b<br/>Result"]
+    
+    H["(a -> QState b)<br/>Continuation"] --> F
+    I["(a -> Double)<br/>Prior Function"] --> C
+    
+    style A fill:#e1f5fe
+    style B fill:#fff3e0
+    style C fill:#e8f5e8
+    style D fill:#fce4ec
+    style E fill:#f3e5f5
+    style F fill:#fff3e0
+    style G fill:#e1f5fe
+    style H fill:#e8f5e8
+    style I fill:#e8f5e8
+</create_diagram>
 
 ---
 
@@ -204,7 +272,29 @@ This mirrors biological cognition: observation affects state, state affects futu
 
 ### Conscious Collapse Architecture
 
-The feedback loop between quantum superposition and classical decision-making creates a conscious-like computational architecture:
+<create_diagram>
+graph TD
+    A["Quantum<br/>Superposition"] --> B["Bayesian<br/>Collapse"]
+    B --> C["Classical<br/>Decision"]
+    C --> D["Update<br/>Priors"]
+    D --> E["Next<br/>Computation"]
+    E --> F["New<br/>Superposition"]
+    F --> A
+    
+    G["Prior<br/>Knowledge"] --> B
+    H["Observation<br/>History"] --> D
+    I["Feedback<br/>Loop"] --> G
+    
+    style A fill:#e1f5fe
+    style B fill:#fce4ec
+    style C fill:#f3e5f5
+    style D fill:#e8f5e8
+    style E fill:#fff3e0
+    style F fill:#e1f5fe
+    style G fill:#e8f5e8
+    style H fill:#fff3e0
+    style I fill:#fce4ec
+</create_diagram>
 
 ---
 
