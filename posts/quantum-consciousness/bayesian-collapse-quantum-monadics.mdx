@@ -37,20 +37,18 @@ This traditional collapse is irreversible and is usually deferred to the end of 
 
 ### Quantum State Evolution
 
-<ContentCard title="Quantum State Evolution Pipeline">
+<ContentCard title="Basic Quantum Circuit with Measurement">
 ```
-|0⟩ Initial State
-       ↓
-   H Gate (Hadamard)
-       ↓
-|ψ⟩ = α|0⟩ + β|1⟩ (Superposition)
-       ↓
-   Measurement/Collapse
-       ↓
-|0⟩ or |1⟩ (Classical Result)
+|0⟩ ──[H]──●──[M]── Classical Bit
+           │
+    Superposition
+    |ψ⟩ = α|0⟩ + β|1⟩
+
+Time: t=0    t=1    t=2
+State: |0⟩ → |+⟩ → |0⟩ or |1⟩
 ```
 
-The quantum state transitions from a definite initial state through superposition to classical measurement outcome.
+Where `[H]` is Hadamard gate, `●` represents superposition state, and `[M]` is measurement.
 </ContentCard>
 
 ---
@@ -75,25 +73,22 @@ This introduces a primitive form of feedback. However, it is still rooted in ran
 
 ### Mid-Circuit Measurement Flow
 
-<ContentCard title="Mid-Circuit Measurement and Conditional Logic">
+<ContentCard title="Conditional Quantum Circuit with Mid-Circuit Measurement">
 ```
-|00⟩
-  ↓
-H(0) → |ψ⟩ = 1/√2(|00⟩ + |10⟩)
-  ↓
-Measure Q0
-  ↓
-  ?
- / \
-|0⟩ |1⟩
-↓    ↓
-|00⟩ → |10⟩
-No X  Apply X(1)
-↓    ↓
-|00⟩ |11⟩
+q0: |0⟩ ──[H]──[M]═══════╤═══ c0
+                 ║       │
+q1: |0⟩ ═════════════════[X]═══ 
+                         │
+              Classical Control
+              if c0 == 1
+
+Circuit Evolution:
+|00⟩ → 1/√2(|00⟩ + |10⟩) → Measurement → {|00⟩ (50%) or |11⟩ (50%)}
+
+Legend: [H]=Hadamard, [M]=Measurement, [X]=Pauli-X, ═══ Classical wire
 ```
 
-Mid-circuit measurement enables conditional quantum operations based on measurement outcomes.
+Conditional X-gate applied to q1 based on measurement result of q0.
 </ContentCard>
 
 ---
@@ -119,22 +114,24 @@ We then sample from the posterior, not the raw quantum amplitudes.
 
 ### Bayesian Collapse Process
 
-<ContentCard title="From Quantum Amplitudes to Informed Collapse">
+<ContentCard title="Bayesian-Weighted Quantum Measurement Circuit">
 ```
-Quantum State: |ψ⟩ = α|0⟩ + β|1⟩
-                    ↓
-Extract Amplitudes: |α|², |β|²
-                    ↓
-Apply Prior: P(0), P(1) ← Prior Knowledge P(ω)
-                    ↓
-Compute Posterior: P(0|D), P(1|D) ← Likelihood P(D|ω)
-                    ↓
-Sample from Posterior
-                    ↓
-Collapsed State: |0⟩ or |1⟩
+|ψ⟩ = α|0⟩ + β|1⟩ ──●──[B]──[M*]─── Bayesian Outcome
+                     │   │    │
+     Amplitudes: ───[A]──┘    │
+     |α|², |β|²              │
+                             │
+     Prior P(ω): ────────────┴─ Informed Collapse
+     
+Bayesian Transform [B]:
+Raw: P(ω) = |α_ω|²
+          ↓ (Bayes Rule)
+Posterior: P(ω|D) = P(D|ω)·P(ω) / ΣP(D|ω')·P(ω')
+
+Measurement [M*]: Sample from posterior instead of |ψ|²
 ```
 
-The Bayesian collapse process transforms quantum probabilities into informed decisions through prior knowledge integration.
+Bayesian measurement replaces Born rule with informed probabilistic collapse.
 </ContentCard>
 
 ---
@@ -200,24 +197,27 @@ This `collapseBayesian` function behaves as a Bayesian monadic bind, weighting f
 
 ### Monadic Collapse Chain
 
-<ContentCard title="Functional Composition of Bayesian Collapse">
+<ContentCard title="Haskell Monad Circuit for Quantum Collapse">
 ```
-QState a (Superposed)
-        ↓
-collapseBayesian ← (a -> Double) Prior Function
-        ↓
-Apply Prior P(a)
-        ↓
-Compute Posterior P(a|D)
-        ↓
-Sample a
-        ↓
-f(a) ← (a -> QState b) Continuation
-        ↓
-QState b (Result)
+QState a ──>>= collapseBayesian ──>>= f ──>> QState b
+   │                │                │         │
+   ●               [P]              [→]        ●
+Superposed     Prior Func      Continuation  Result
+   
+Type Signature:
+collapseBayesian :: QState a -> (a -> QState b) -> (a -> Double) -> QState b
+
+Monadic Bind Chain:
+do state ← superposed
+   prior ← getPrior
+   collapsed ← bayesianCollapse state prior
+   result ← continuation collapsed
+   return result
+
+Where: >>= is monadic bind, [P] applies priors, [→] is continuation
 ```
 
-The monadic structure enables compositional Bayesian collapse through typed functional programming.
+Monadic composition chains probabilistic quantum operations with type safety.
 </ContentCard>
 
 ---
@@ -271,25 +271,30 @@ This mirrors biological cognition: observation affects state, state affects futu
 
 ### Conscious Collapse Architecture
 
-<ContentCard title="Feedback Loop of Conscious Computation">
+<ContentCard title="Consciousness Circuit with Quantum-Classical Feedback">
 ```
-    Quantum Superposition
-            ↓
-    Bayesian Collapse ← Prior Knowledge
-            ↓              ↑
-    Classical Decision     │
-            ↓              │
-    Update Priors ← Observation History
-            ↓              ↑
-    Next Computation       │
-            ↓              │
-    New Superposition      │
-            ↓              │
-            └──────────────┘
-            (Feedback Loop)
+|ψₙ⟩ ──[U]──●──[B]──[M*]───┬─── Decision
+            │   ↑           │
+            │   │           │
+     [Memory]   [P]         │ Classical
+            │   ↑           │ Feedback
+            │   │           │
+            └───┴───[Update]┘
+                    ↑
+               Observation
+               History
+
+Consciousness Loop:
+1. [U]: Unitary evolution (thought formation)
+2. [B]: Bayesian weighting with priors [P]
+3. [M*]: Informed measurement/collapse
+4. [Update]: Classical decision updates memory
+5. [Memory]: Feeds back to priors for next cycle
+
+Time Evolution: |ψₙ⟩ → Decision → |ψₙ₊₁⟩ → ...
 ```
 
-The feedback loop between quantum superposition and classical decision-making creates a conscious-like computational architecture.
+Each conscious moment emerges from quantum-classical feedback between belief and collapse.
 </ContentCard>
 
 ---
