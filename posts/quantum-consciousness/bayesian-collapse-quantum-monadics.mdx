@@ -37,19 +37,21 @@ This traditional collapse is irreversible and is usually deferred to the end of 
 
 ### Quantum State Evolution
 
-<create_diagram>
-graph TD
-    A["|0⟩ Initial State"] --> B["H Gate<br/>Hadamard"]
-    B --> C["|ψ⟩ = α|0⟩ + β|1⟩<br/>Superposition"]
-    C --> D["Measurement<br/>Collapse"]
-    D --> E["|0⟩ or |1⟩<br/>Classical Result"]
-    
-    style A fill:#e1f5fe
-    style C fill:#fff3e0
-    style E fill:#f3e5f5
-    style B fill:#e8f5e8
-    style D fill:#fce4ec
-</create_diagram>
+<ContentCard title="Quantum State Evolution Pipeline">
+```
+|0⟩ Initial State
+       ↓
+   H Gate (Hadamard)
+       ↓
+|ψ⟩ = α|0⟩ + β|1⟩ (Superposition)
+       ↓
+   Measurement/Collapse
+       ↓
+|0⟩ or |1⟩ (Classical Result)
+```
+
+The quantum state transitions from a definite initial state through superposition to classical measurement outcome.
+</ContentCard>
 
 ---
 
@@ -73,23 +75,26 @@ This introduces a primitive form of feedback. However, it is still rooted in ran
 
 ### Mid-Circuit Measurement Flow
 
-<create_diagram>
-graph TD
-    A["|00⟩"] --> B["H(0)"]
-    B --> C["|ψ⟩ = 1/√2(|00⟩ + |10⟩)"]
-    C --> D["Measure Q0"]
-    D --> E{"|0⟩ or |1⟩?"}
-    E -->|"|0⟩"| F["State: |00⟩<br/>No X gate"]
-    E -->|"|1⟩"| G["State: |10⟩<br/>Apply X(1)"]
-    F --> H["|00⟩ Final"]
-    G --> I["|11⟩ Final"]
-    
-    style A fill:#e1f5fe
-    style C fill:#fff3e0
-    style E fill:#ffebee
-    style H fill:#f3e5f5
-    style I fill:#f3e5f5
-</create_diagram>
+<ContentCard title="Mid-Circuit Measurement and Conditional Logic">
+```
+|00⟩
+  ↓
+H(0) → |ψ⟩ = 1/√2(|00⟩ + |10⟩)
+  ↓
+Measure Q0
+  ↓
+  ?
+ / \
+|0⟩ |1⟩
+↓    ↓
+|00⟩ → |10⟩
+No X  Apply X(1)
+↓    ↓
+|00⟩ |11⟩
+```
+
+Mid-circuit measurement enables conditional quantum operations based on measurement outcomes.
+</ContentCard>
 
 ---
 
@@ -114,26 +119,23 @@ We then sample from the posterior, not the raw quantum amplitudes.
 
 ### Bayesian Collapse Process
 
-<create_diagram>
-graph TD
-    A["Quantum State<br/>|ψ⟩ = α|0⟩ + β|1⟩"] --> B["Extract Amplitudes<br/>|α|², |β|²"]
-    B --> C["Apply Prior<br/>P(0), P(1)"]
-    C --> D["Compute Posterior<br/>P(0|D), P(1|D)"]
-    D --> E["Sample from<br/>Posterior"]
-    E --> F["Collapsed State<br/>|0⟩ or |1⟩"]
-    
-    G["Prior Knowledge<br/>P(ω)"] --> C
-    H["Likelihood<br/>P(D|ω)"] --> D
-    
-    style A fill:#e1f5fe
-    style B fill:#fff3e0
-    style C fill:#e8f5e8
-    style D fill:#fce4ec
-    style E fill:#f3e5f5
-    style F fill:#f3e5f5
-    style G fill:#e8f5e8
-    style H fill:#fff3e0
-</create_diagram>
+<ContentCard title="From Quantum Amplitudes to Informed Collapse">
+```
+Quantum State: |ψ⟩ = α|0⟩ + β|1⟩
+                    ↓
+Extract Amplitudes: |α|², |β|²
+                    ↓
+Apply Prior: P(0), P(1) ← Prior Knowledge P(ω)
+                    ↓
+Compute Posterior: P(0|D), P(1|D) ← Likelihood P(D|ω)
+                    ↓
+Sample from Posterior
+                    ↓
+Collapsed State: |0⟩ or |1⟩
+```
+
+The Bayesian collapse process transforms quantum probabilities into informed decisions through prior knowledge integration.
+</ContentCard>
 
 ---
 
@@ -198,28 +200,25 @@ This `collapseBayesian` function behaves as a Bayesian monadic bind, weighting f
 
 ### Monadic Collapse Chain
 
-<create_diagram>
-graph TD
-    A["QState a<br/>Superposed"] --> B["collapseBayesian"]
-    B --> C["Apply Prior<br/>P(a)"]
-    C --> D["Compute Posterior<br/>P(a|D)"]
-    D --> E["Sample a"]
-    E --> F["f(a)"]
-    F --> G["QState b<br/>Result"]
-    
-    H["(a -> QState b)<br/>Continuation"] --> F
-    I["(a -> Double)<br/>Prior Function"] --> C
-    
-    style A fill:#e1f5fe
-    style B fill:#fff3e0
-    style C fill:#e8f5e8
-    style D fill:#fce4ec
-    style E fill:#f3e5f5
-    style F fill:#fff3e0
-    style G fill:#e1f5fe
-    style H fill:#e8f5e8
-    style I fill:#e8f5e8
-</create_diagram>
+<ContentCard title="Functional Composition of Bayesian Collapse">
+```
+QState a (Superposed)
+        ↓
+collapseBayesian ← (a -> Double) Prior Function
+        ↓
+Apply Prior P(a)
+        ↓
+Compute Posterior P(a|D)
+        ↓
+Sample a
+        ↓
+f(a) ← (a -> QState b) Continuation
+        ↓
+QState b (Result)
+```
+
+The monadic structure enables compositional Bayesian collapse through typed functional programming.
+</ContentCard>
 
 ---
 
@@ -272,29 +271,26 @@ This mirrors biological cognition: observation affects state, state affects futu
 
 ### Conscious Collapse Architecture
 
-<create_diagram>
-graph TD
-    A["Quantum<br/>Superposition"] --> B["Bayesian<br/>Collapse"]
-    B --> C["Classical<br/>Decision"]
-    C --> D["Update<br/>Priors"]
-    D --> E["Next<br/>Computation"]
-    E --> F["New<br/>Superposition"]
-    F --> A
-    
-    G["Prior<br/>Knowledge"] --> B
-    H["Observation<br/>History"] --> D
-    I["Feedback<br/>Loop"] --> G
-    
-    style A fill:#e1f5fe
-    style B fill:#fce4ec
-    style C fill:#f3e5f5
-    style D fill:#e8f5e8
-    style E fill:#fff3e0
-    style F fill:#e1f5fe
-    style G fill:#e8f5e8
-    style H fill:#fff3e0
-    style I fill:#fce4ec
-</create_diagram>
+<ContentCard title="Feedback Loop of Conscious Computation">
+```
+    Quantum Superposition
+            ↓
+    Bayesian Collapse ← Prior Knowledge
+            ↓              ↑
+    Classical Decision     │
+            ↓              │
+    Update Priors ← Observation History
+            ↓              ↑
+    Next Computation       │
+            ↓              │
+    New Superposition      │
+            ↓              │
+            └──────────────┘
+            (Feedback Loop)
+```
+
+The feedback loop between quantum superposition and classical decision-making creates a conscious-like computational architecture.
+</ContentCard>
 
 ---
 
