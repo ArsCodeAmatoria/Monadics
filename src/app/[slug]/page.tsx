@@ -11,6 +11,13 @@ import { InsightQuote } from '@/components/insight-quote'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import { 
+  ArchitectureStack, 
+  ArchitectureLayer, 
+  FlowDiagram, 
+  QuantumProcessDiagram, 
+  SystemFlowDiagram 
+} from '@/components/ui/diagram'
 import { formatDate } from '@/lib/utils'
 import { calculateReadingTime, formatReadingTime } from '@/lib/reading-time'
 import { MDXRemote } from 'next-mdx-remote/rsc'
@@ -87,6 +94,12 @@ const components = {
   TableHead,
   TableHeader,
   TableRow,
+  // Enhanced Diagram Components
+  ArchitectureStack,
+  ArchitectureLayer,
+  FlowDiagram,
+  QuantumProcessDiagram,
+  SystemFlowDiagram,
 }
 
 interface PageProps {
