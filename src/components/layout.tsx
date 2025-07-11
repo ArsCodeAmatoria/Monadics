@@ -12,6 +12,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import { LatestArticles } from './latest-articles'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -420,43 +421,7 @@ export function Layout({ children }: LayoutProps) {
             </div>
 
             {/* Latest Articles Column */}
-            <div className="space-y-6">
-              <h3 className="text-xl font-black font-sans text-primary uppercase">
-                LATEST ARTICLES
-              </h3>
-              <div className="space-y-4">
-                <Link 
-                  href="/bayesian-inference-monad-minds"
-                  className="block group"
-                >
-                  <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors uppercase leading-tight">
-                    BAYESIAN INFERENCE IN MONAD MINDS
-                  </h4>
-                  <p className="text-xs text-muted-foreground mt-1 font-medium">
-                    January 2, 2025
-                  </p>
-                </Link>
-                
-                <Link 
-                  href="/quantum-superposition-and-monads"
-                  className="block group"
-                >
-                  <h4 className="text-sm font-bold text-foreground group-hover:text-primary transition-colors uppercase leading-tight">
-                    QUANTUM SUPERPOSITION AND THE MONADIC SELF
-                  </h4>
-                  <p className="text-xs text-muted-foreground mt-1 font-medium">
-                    July 1, 2025
-                  </p>
-                </Link>
-
-                <Link 
-                  href="/"
-                  className="inline-flex items-center text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase"
-                >
-                  ALL ARTICLES <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
-              </div>
-            </div>
+            <LatestArticles />
 
             {/* Topics Column */}
             <div className="space-y-6">
