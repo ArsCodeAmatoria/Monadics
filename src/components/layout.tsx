@@ -527,42 +527,30 @@ export function Layout({ children }: LayoutProps) {
               </div>
               
               <div className="flex items-center space-x-6">
-                <a
-                  href="https://github.com/ArsCodeAmatoria/Monadics"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                <div className="text-muted-foreground"
                   title="GitHub"
                 >
                   <Github className="h-4 w-4" />
                   <span className="sr-only">GitHub</span>
-                </a>
-                <a
-                  href="https://x.com/ars_nine"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                </div>
+                <div className="text-muted-foreground"
                   title="Twitter/X"
                 >
                   <Twitter className="h-4 w-4" />
                   <span className="sr-only">Twitter/X</span>
-                </a>
-                <a
-                  href="/rss.xml"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                </div>
+                <div className="text-muted-foreground"
                   title="RSS Feed"
                 >
                   <Rss className="h-4 w-4" />
                   <span className="sr-only">RSS Feed</span>
-                </a>
-                <a
-                  href="mailto:arscodeamatoria@gmail.com"
-                  className="text-muted-foreground hover:text-primary transition-colors"
+                </div>
+                <div className="text-muted-foreground"
                   title="Email"
                 >
                   <Mail className="h-4 w-4" />
                   <span className="sr-only">Contact</span>
-                </a>
+                </div>
               </div>
             </div>
           </div>
